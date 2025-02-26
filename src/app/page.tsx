@@ -60,10 +60,10 @@ export default function Home() {
     },
     {
       id: 3,
-      title: "Health & Fitness Tracker",
+      title: "Water Refilling System",
       description: "Mobile-first web application for tracking workouts, nutrition, and health metrics with custom goal setting.",
-      technologies: ["React Native", "Firebase", "Chart.js", "Redux"],
-      image: "/project-3.jpg",
+      technologies: ["C#", "Windows", "Chart.js", "Redux"],
+      image: "/aquaease.png",
       link: "https://example.com/project3"
     },
   ];
@@ -131,7 +131,7 @@ export default function Home() {
         : 'bg-gradient-to-br from-gray-100 via-purple-100 to-white text-gray-900'
     } overflow-x-hidden relative`}>
       {/* Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md w-full">
         <div className={`container mx-auto px-4 py-4 flex justify-between items-center ${
           theme === 'dark' ? 'bg-black/30' : 'bg-white/30'
         }`}>
@@ -524,7 +524,7 @@ export default function Home() {
                       theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                     }`}
                   >
-                    John Rey Amad
+                    Your Name
                   </label>
                   <input
                     type="text"
