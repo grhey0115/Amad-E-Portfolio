@@ -742,7 +742,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="relative">
               {/* Timeline line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-indigo-500 to-purple-500" />
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-indigo-500 to-purple-500 md:block hidden" />
               
               {/* Experience item */}
               <motion.div
@@ -753,9 +753,9 @@ export default function Home() {
                 className="relative mb-12"
               >
                 {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-indigo-500 border-4 border-white dark:border-gray-900" />
+                <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-indigo-500 border-4 border-white dark:border-gray-900 md:block hidden" />
                 
-                <div className={`ml-auto w-[calc(50%-2rem)] p-6 rounded-2xl shadow-xl ${
+                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
                   theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
                 } backdrop-blur-md`}>
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
