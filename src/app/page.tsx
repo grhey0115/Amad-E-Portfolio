@@ -6,14 +6,14 @@ import { motion, useAnimation, useScroll, useTransform, AnimatePresence } from "
 import { useInView } from "react-intersection-observer";
 import emailjs from '@emailjs/browser';
 import { Button } from "@/components/ui/button";
-import { 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Code, 
-  ChevronDown, 
-  Menu, 
-  X, 
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Code,
+  ChevronDown,
+  Menu,
+  X,
   ArrowUp,
   ExternalLink,
   Sun,
@@ -24,7 +24,9 @@ import {
   FileCode,
   PenTool,
   Send,
-  MessageSquare
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 type Theme = 'dark' | 'light';
@@ -73,7 +75,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  
+  const [carouselX, setCarouselX] = useState(0);
+
   // Animation controls
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -83,22 +86,75 @@ export default function Home() {
 
   // Hero section animations
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress: heroScrollProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
-  
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.7]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
-  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
 
-  // Scroll progress indicator
+  const heroOpacity = useTransform(heroScrollProgress, [0, 0.5], [1, 0.7]);
+  const heroScale = useTransform(heroScrollProgress, [0, 0.5], [1, 0.95]);
+  const heroY = useTransform(heroScrollProgress, [0, 0.5], [0, 50]);
+
+  // Scroll progress indicator for entire page
+  const { scrollYProgress } = useScroll();
   const scrollProgress = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   // Projects data with storytelling
   const projects: Project[] = [
     {
       id: 1,
+      title: "Construction Ops",
+      problem: "Construction companies needed streamlined operations management and workflow tracking.",
+      solution: "Built a comprehensive construction operations platform with real-time project tracking and team coordination.",
+      challenges: "Managing complex workflows and ensuring real-time updates across multiple teams.",
+      impact: "Streamlined construction workflows and improved team collaboration.",
+      technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"],
+      image: "/construction-ops.png",
+      link: "https://constructionopsstanton.onrender.com",
+      github: "#",
+      description: "A comprehensive construction operations management system featuring real-time project tracking, team coordination, and workflow automation. The platform enables construction teams to manage projects efficiently with integrated communication tools."
+    },
+    {
+      id: 2,
+      title: "Tenant Management System",
+      problem: "Property managers struggled with tenant communications and lease management.",
+      solution: "Developed an integrated tenant management platform with automated notifications and document handling.",
+      challenges: "Ensuring seamless communication between property managers and tenants.",
+      impact: "Improved tenant satisfaction and reduced administrative overhead.",
+      technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"],
+      image: "/tenant-management.png",
+      link: "https://tenant-dashboard-stanton.vercel.app/admin",
+      github: "#",
+      description: "A modern tenant management system that streamlines property management operations. Features include automated lease tracking, maintenance requests, payment processing, and integrated SMS/email notifications for tenant communications."
+    },
+    {
+      id: 3,
+      title: "Ersatzteil-Store",
+      problem: "Auto parts retailers needed an efficient e-commerce platform for spare parts.",
+      solution: "Created a specialized e-commerce store with advanced part search and inventory management.",
+      challenges: "Building intuitive search functionality for technical automotive parts.",
+      impact: "Enhanced customer experience and streamlined parts procurement.",
+      technologies: ["Shopware 6", "PHP", "MySQL", "Vue.js", "REST API"],
+      image: "/ersatzteil-store.png",
+      link: "https://ersatzteil-store.ch/",
+      github: "https://github.com/yourusername/ersatzteil-store",
+      description: "A specialized e-commerce platform for automotive spare parts featuring advanced search capabilities, VIN-based part lookup, and comprehensive inventory management. The system provides detailed part specifications and compatibility information."
+    },
+    {
+      id: 4,
+      title: "Blog Post Generator & Scheduler",
+      problem: "Content creators needed automated blog generation and scheduling capabilities.",
+      solution: "Built an AI-powered content generation system with automated publishing and scheduling.",
+      challenges: "Integrating AI content generation while maintaining quality and consistency.",
+      impact: "Automated content workflow and increased publishing efficiency.",
+      technologies: ["Node.js", "AI Integration", "CMS", "React", "MongoDB"],
+      image: "/blog-generator.png",
+      link: "#",
+      github: "https://github.com/yourusername/blog-generator",
+      description: "An automated blog post generation and scheduling platform powered by AI. Features include content generation, SEO optimization, multi-platform publishing, and advanced scheduling capabilities for consistent content delivery."
+    },
+    {
+      id: 5,
       title: "LotschFashion E-commerce",
       problem: "Small businesses struggled with managing online inventory and secure payments.",
       solution: "Built a WordPress-based e-commerce platform using Elementor and WooCommerce, integrating real-time inventory and secure payment gateways.",
@@ -111,7 +167,7 @@ export default function Home() {
       description: "A complete e-commerce solution for a fashion retailer featuring real-time inventory management, secure payment processing, and a responsive mobile-first design. The platform provides an intuitive shopping experience with personalized recommendations and easy checkout flow."
     },
     {
-      id: 2,
+      id: 6,
       title: "SK Information System",
       problem: "Youth organizations needed automated data management and analytics.",
       solution: "Developed a Laravel and React system with AI-powered content generation and real-time analytics.",
@@ -124,7 +180,7 @@ export default function Home() {
       description: "A comprehensive data management system for youth organizations featuring AI-assisted content generation, real-time analytics dashboards, and secure multi-user access controls. The platform streamlines administrative tasks and provides valuable insights for better program planning."
     },
     {
-      id: 3,
+      id: 7,
       title: "Water Refilling System",
       problem: "Water stations required efficient inventory and sales tracking.",
       solution: "Created a C# desktop app with Windows Forms for inventory and sales analytics.",
@@ -275,9 +331,9 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen font-[Poppins] transition-colors duration-500 ${
-      theme === 'dark' 
-        ? 'bg-gradient-to-br from-gray-950 via-indigo-950 to-purple-950 text-gray-50' 
-        : 'bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50 text-gray-900'
+      theme === 'dark'
+        ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-gray-50'
+        : 'bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 text-gray-900'
     } overflow-x-hidden relative`}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
@@ -461,8 +517,10 @@ export default function Home() {
 
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 z-50"
-        style={{ 
+        className={`fixed top-0 left-0 right-0 h-1 z-50 ${
+          theme === 'dark' ? 'bg-white' : 'bg-black'
+        }`}
+        style={{
           width: scrollProgress,
           transform: 'translateZ(0)',
           willChange: 'width'
@@ -483,7 +541,9 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="flex items-center"
             >
-              <span className="text-xl font-bold code-font tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
+              <span className={`text-xl font-bold code-font tracking-tight ${
+                theme === 'dark' ? 'text-white' : 'text-black'
+              }`}>
                 JRA
               </span>
             </motion.a>
@@ -496,9 +556,9 @@ export default function Home() {
                   href={link.href}
                   whileHover={{ y: -2 }}
                   className={`text-sm font-medium tracking-wide transition-colors duration-200 ${
-                    activeSection === link.href.substring(1) 
-                      ? 'text-indigo-500 font-semibold' 
-                      : theme === 'dark' ? 'text-gray-300 hover:text-indigo-400' : 'text-gray-700 hover:text-indigo-600'
+                    activeSection === link.href.substring(1)
+                      ? theme === 'dark' ? 'text-white font-semibold' : 'text-black font-semibold'
+                      : theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
                   }`}
                 >
                   {link.name}
@@ -646,14 +706,12 @@ export default function Home() {
             />
           </motion.div>
           
-          <motion.h1 
+          <motion.h1
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: isLoading ? 0 : 1 }}
             transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.6 }}
-            className={`text-5xl md:text-7xl font-bold code-font mb-6 bg-clip-text text-transparent bg-gradient-to-r ${
-              theme === 'dark' 
-                ? 'from-indigo-300 via-purple-400 to-pink-400' 
-                : 'from-indigo-600 via-purple-600 to-pink-600'
+            className={`text-5xl md:text-7xl font-bold code-font mb-6 ${
+              theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
             John Rey Amad
@@ -697,12 +755,12 @@ export default function Home() {
                   onClick={() => setActiveNav(nav as 'developer' | 'designer')}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     activeNav === nav
-                      ? theme === 'dark' 
-                        ? 'bg-indigo-600 text-white' 
-                        : 'bg-indigo-500 text-white'
+                      ? theme === 'dark'
+                        ? 'bg-white text-black'
+                        : 'bg-black text-white'
                       : theme === 'dark'
-                        ? 'text-gray-400 hover:text-gray-200'
-                        : 'text-gray-600 hover:text-gray-800'
+                        ? 'text-gray-400 hover:text-white'
+                        : 'text-gray-600 hover:text-black'
                   }`}
                 >
                   {nav.charAt(0).toUpperCase() + nav.slice(1)}
@@ -721,8 +779,8 @@ export default function Home() {
               asChild
               className={`px-8 py-3 rounded-full text-lg font-semibold code-font tracking-wide shadow-lg transform hover:scale-105 transition-all duration-300 ${
                 theme === 'dark'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'
-                  : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600'
+                  ? 'bg-white text-black hover:bg-gray-200'
+                  : 'bg-black text-white hover:bg-gray-800'
               }`}
             >
               <a href="#projects">Explore My Work</a>
@@ -732,8 +790,8 @@ export default function Home() {
               variant="outline"
               className={`px-8 py-3 rounded-full text-lg font-semibold code-font tracking-wide border-2 shadow-lg transform hover:scale-105 transition-all duration-300 ${
                 theme === 'dark'
-                  ? 'border-indigo-500 text-indigo-400 hover:bg-indigo-950/20'
-                  : 'border-indigo-400 text-indigo-700 hover:bg-indigo-100/20'
+                  ? 'border-white text-white hover:bg-white/10'
+                  : 'border-black text-black hover:bg-black/10'
               }`}
             >
               <a href="#contact">Hire Me</a>
@@ -758,7 +816,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 className={`p-3 rounded-full transform transition-all duration-200 ${
-                  theme === 'dark' ? 'hover:bg-gray-800/50 text-gray-400 hover:text-indigo-400' : 'hover:bg-gray-200/50 text-gray-600 hover:text-indigo-600'
+                  theme === 'dark' ? 'hover:bg-gray-800/50 text-gray-400 hover:text-white' : 'hover:bg-gray-200/50 text-gray-600 hover:text-black'
                 }`}
               >
                 <Icon className="h-6 w-6" />
@@ -800,7 +858,7 @@ export default function Home() {
                 ease: "easeInOut",
               }}
               className={`absolute w-16 h-16 rounded-full blur-xl ${
-                theme === 'dark' ? 'bg-gradient-to-r from-indigo-500/30 to-purple-500/30' : 'bg-gradient-to-r from-indigo-300/30 to-purple-300/30'
+                theme === 'dark' ? 'bg-gradient-to-r from-gray-600/20 to-gray-700/20' : 'bg-gradient-to-r from-gray-300/20 to-gray-400/20'
               }`}
             />
           ))}
@@ -819,7 +877,9 @@ export default function Home() {
               theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
             } backdrop-blur-md`}
           >
-            <h2 className="text-4xl font-semibold code-font mb-6 text-center tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
+            <h2 className={`text-4xl font-semibold code-font mb-6 text-center tracking-tight ${
+              theme === 'dark' ? 'text-white' : 'text-black'
+            }`}>
               About Me
             </h2>
             <p className={`text-lg mb-6 leading-relaxed ${
@@ -843,7 +903,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-semibold code-font text-center mb-16 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500"
+            className={`text-4xl font-semibold code-font text-center mb-16 tracking-tight ${
+              theme === 'dark' ? 'text-white' : 'text-black'
+            }`}
           >
             {activeNav === 'developer' ? 'Technical Expertise' : 'Design Proficiency'}
           </motion.h2>
@@ -887,7 +949,9 @@ export default function Home() {
                   theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
                 } backdrop-blur-md`}
               >
-                <h3 className="text-xl font-semibold code-font mb-4 text-indigo-500 tracking-tight">{category.title}</h3>
+                <h3 className={`text-xl font-semibold code-font mb-4 tracking-tight ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>{category.title}</h3>
                 <ul className="space-y-3">
                   {category.skills.map((skill, skillIndex) => (
                     <motion.li
@@ -895,9 +959,11 @@ export default function Home() {
                       className="flex items-center group"
                       whileHover={{ x: 5 }}
                     >
-                      <Code className="h-4 w-4 mr-2 text-indigo-500 group-hover:scale-110 transition-transform" />
-                      <span className={`code-font group-hover:text-indigo-500 transition-colors ${
-                        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      <Code className={`h-4 w-4 mr-2 group-hover:scale-110 transition-transform ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`} />
+                      <span className={`code-font transition-colors ${
+                        theme === 'dark' ? 'text-gray-300 group-hover:text-white' : 'text-gray-700 group-hover:text-black'
                       }`}>
                         {skill}
                       </span>
@@ -917,33 +983,184 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-semibold code-font text-center mb-16 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500"
+            className={`text-4xl font-semibold code-font text-center mb-16 tracking-tight ${
+              theme === 'dark' ? 'text-white' : 'text-black'
+            }`}
           >
             Professional Experience
           </motion.h2>
 
           <div className="max-w-4xl mx-auto">
-            <div className="relative">
+            <div className="relative space-y-12">
               {/* Timeline line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-indigo-500 to-purple-500 md:block hidden" />
-              
-              {/* Experience item */}
+              <div className={`absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 md:block hidden ${
+                theme === 'dark' ? 'bg-white' : 'bg-black'
+              }`} />
+
+              {/* Full Stack Developer - Stanton Management LLC */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                {/* Timeline dot */}
+                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
+                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
+                }`} />
+
+                <div className={`md:mr-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
+                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                } backdrop-blur-md`}>
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div>
+                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>Full Stack Developer</h3>
+                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Stanton Management LLC</p>
+                      <p className={`text-sm code-font mt-1 ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
+                        Freelance - Project Based
+                      </p>
+                    </div>
+                  </div>
+                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <p className="leading-relaxed">
+                      Created construction operations and tenant management system. Developed comprehensive solutions for streamlining construction workflows and tenant communications.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {["Next.js", "Supabase", "Twilio", "React", "TypeScript", "Full Stack"].map((tech, index) => (
+                        <span
+                          key={index}
+                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
+                            theme === 'dark'
+                              ? 'bg-cyan-900/30 text-cyan-300'
+                              : 'bg-cyan-100/50 text-cyan-800'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Freelance Web Developer/CMS Developer */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="relative mb-12"
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="relative"
               >
                 {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-indigo-500 border-4 border-white dark:border-gray-900 md:block hidden" />
-                
+                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
+                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
+                }`} />
+
                 <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
                   theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
                 } backdrop-blur-md`}>
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
                     <div>
-                      <h3 className="text-2xl font-semibold code-font text-indigo-400 mb-2">Software Engineer Intern</h3>
+                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>Web Developer / CMS Developer</h3>
+                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Freelance</p>
+                    </div>
+                  </div>
+                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <p className="leading-relaxed">
+                      Developed custom plugins for e-commerce and content management platforms. Specialized in creating tailored solutions for Shopware 6 and WordPress ecosystems.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {["Shopware 6", "WordPress", "PHP", "Plugin Development", "CMS", "E-commerce"].map((tech, index) => (
+                        <span
+                          key={index}
+                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
+                            theme === 'dark'
+                              ? 'bg-cyan-900/30 text-cyan-300'
+                              : 'bg-cyan-100/50 text-cyan-800'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Freelance Web Developer - Blog & CMS */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="relative"
+              >
+                {/* Timeline dot */}
+                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
+                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
+                }`} />
+
+                <div className={`md:mr-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
+                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                } backdrop-blur-md`}>
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div>
+                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>Web Developer</h3>
+                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Freelance</p>
+                    </div>
+                  </div>
+                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <p className="leading-relaxed">
+                      Developed blog post generator and scheduler with integrated CMS functionality. Built automated content publishing systems with scheduling capabilities.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {["CMS Development", "Automation", "Content Scheduling", "JavaScript", "API Integration"].map((tech, index) => (
+                        <span
+                          key={index}
+                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
+                            theme === 'dark'
+                              ? 'bg-cyan-900/30 text-cyan-300'
+                              : 'bg-cyan-100/50 text-cyan-800'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Software Engineer Intern */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="relative"
+              >
+                {/* Timeline dot */}
+                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
+                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
+                }`} />
+
+                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
+                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                } backdrop-blur-md`}>
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div>
+                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>Software Engineer Intern</h3>
                       <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>RAFI-MFI IT Unit</p>
                     </div>
                     <p className={`text-sm code-font mt-2 md:mt-0 ${
@@ -961,9 +1178,9 @@ export default function Home() {
                         <span
                           key={index}
                           className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark' 
-                              ? 'bg-indigo-900/30 text-indigo-300' 
-                              : 'bg-indigo-100/50 text-indigo-800'
+                            theme === 'dark'
+                              ? 'bg-cyan-900/30 text-cyan-300'
+                              : 'bg-cyan-100/50 text-cyan-800'
                           }`}
                         >
                           {tech}
@@ -988,95 +1205,162 @@ export default function Home() {
         >
           <motion.h2
             variants={itemVariants}
-            className="text-4xl font-semibold code-font text-center mb-16 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500"
+            className={`text-4xl font-semibold code-font text-center mb-16 tracking-tight ${
+              theme === 'dark' ? 'text-white' : 'text-black'
+            }`}
           >
             Featured Projects
           </motion.h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
+
+          {/* Projects Carousel */}
+          <div className="relative">
+            {/* Left Arrow */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                const newX = Math.min(carouselX + 400, 0);
+                setCarouselX(newX);
+              }}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
+                theme === 'dark'
+                  ? 'bg-white text-black hover:bg-gray-200'
+                  : 'bg-black text-white hover:bg-gray-800'
+              } transition-all duration-300 ${carouselX >= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={carouselX >= 0}
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </motion.button>
+
+            {/* Right Arrow */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                const maxScroll = -(projects.length * 400 - (typeof window !== 'undefined' ? window.innerWidth - 200 : 1000));
+                const newX = Math.max(carouselX - 400, maxScroll);
+                setCarouselX(newX);
+              }}
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
+                theme === 'dark'
+                  ? 'bg-white text-black hover:bg-gray-200'
+                  : 'bg-black text-white hover:bg-gray-800'
+              } transition-all duration-300`}
+            >
+              <ChevronRight className="h-6 w-6" />
+            </motion.button>
+
+            <div className="overflow-hidden mx-16">
               <motion.div
-                key={project.id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.03, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2)" }}
-                className={`rounded-2xl overflow-hidden ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md shadow-lg transition-all duration-300`}
+                className="flex gap-8 pb-8"
+                drag="x"
+                dragConstraints={{
+                  left: -(projects.length * 400 - (typeof window !== 'undefined' ? window.innerWidth - 200 : 1000)),
+                  right: 0
+                }}
+                dragElastic={0.1}
+                animate={{ x: carouselX }}
+                onDragEnd={(e, info) => {
+                  setCarouselX(info.offset.x + carouselX);
+                }}
+                style={{ cursor: 'grab' }}
+                whileTap={{ cursor: 'grabbing' }}
               >
-                <div className="relative w-full h-64 overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    style={{ objectFit: "cover" }}
-                    className="transition-transform duration-500 group-hover:scale-110"
-                  />
+                {projects.map((project) => (
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    key={project.id}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.03, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2)" }}
+                    className={`flex-shrink-0 w-[380px] rounded-2xl overflow-hidden ${
+                      theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                    } backdrop-blur-md shadow-lg transition-all duration-300`}
+                    style={{ userSelect: 'none' }}
                   >
-                    <p className="text-sm text-white code-font">
-                      <strong>Challenges:</strong> {project.challenges}
-                    </p>
+                    <div className="relative w-full h-64 overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        className="transition-transform duration-500 group-hover:scale-110 pointer-events-none"
+                      />
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4"
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="text-sm text-white code-font">
+                          <strong>Challenges:</strong> {project.challenges}
+                        </p>
+                      </motion.div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold code-font mb-3 tracking-tight">{project.title}</h3>
+                      <p className={`mb-4 text-sm leading-relaxed code-font ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
+                        <strong>Problem:</strong> {project.problem}<br />
+                        <strong>Solution:</strong> {project.solution}<br />
+                        <strong>Impact:</strong> {project.impact}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.technologies.map((tech, index) => (
+                          <span
+                            key={index}
+                            className={`text-xs px-2 py-1 rounded-full code-font font-medium tracking-tighter ${
+                              theme === 'dark'
+                                ? 'bg-indigo-900/30 text-indigo-300'
+                                : 'bg-indigo-100/50 text-indigo-800'
+                            }`}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex space-x-4">
+                        <motion.a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ x: 3 }}
+                          className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
+                            theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
+                          }`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          🌐 Live Demo
+                        </motion.a>
+                        {project.github && (
+                          <motion.a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ x: 3 }}
+                            className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
+                              theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
+                            }`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Github className="h-4 w-4 mr-1" />
+                            Code
+                          </motion.a>
+                        )}
+                      </div>
+                    </div>
                   </motion.div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold code-font mb-3 tracking-tight">{project.title}</h3>
-                  <p className={`mb-4 text-sm leading-relaxed code-font ${
-                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                  }`}>
-                    <strong>Problem:</strong> {project.problem}<br />
-                    <strong>Solution:</strong> {project.solution}<br />
-                    <strong>Impact:</strong> {project.impact}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.map((tech, index) => (
-                      <span 
-                        key={index}
-                        className={`text-xs px-2 py-1 rounded-full code-font font-medium tracking-tighter ${
-                          theme === 'dark' 
-                            ? 'bg-indigo-900/30 text-indigo-300' 
-                            : 'bg-indigo-100/50 text-indigo-800'
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  <div className="flex space-x-4">
-                    <motion.a 
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ x: 3 }}
-                      className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
-                        theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
-                      }`}
-                    >
-                      🌐 Live Demo
-                    </motion.a>
-                    {project.github && (
-                      <motion.a 
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ x: 3 }}
-                        className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
-                          theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
-                        }`}
-                      >
-                        <Github className="h-4 w-4 mr-1" />
-                        Code
-                      </motion.a>
-                    )}
-                  </div>
-                </div>
+                ))}
               </motion.div>
-            ))}
+            </div>
           </div>
+
+          <p className={`text-center mt-8 text-sm code-font ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            ← Drag or use arrows to explore more projects →
+          </p>
         </motion.div>
       </section>
 
