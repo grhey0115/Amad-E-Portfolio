@@ -103,6 +103,19 @@ export default function Home() {
   const projects: Project[] = [
     {
       id: 1,
+      title: "Polerisdigital.com",
+      problem: "Businesses needed a comprehensive digital platform to establish their online presence and showcase services.",
+      solution: "Created a modern SaaS website with responsive design, service showcases, and client engagement features.",
+      challenges: "Balancing aesthetic appeal with functionality while ensuring optimal performance across devices.",
+      impact: "Provided businesses with a professional digital platform that enhanced their online visibility and client engagement.",
+      technologies: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
+      image: "/polerisdigital.png",
+      link: "https://polerisdigital.com",
+      github: "#",
+      description: "A professional SaaS website platform featuring modern design principles, responsive layouts, and interactive elements. The platform showcases digital services, client portfolios, and provides seamless user experience across all devices."
+    },
+    {
+      id: 2,
       title: "Construction Ops",
       problem: "Construction companies needed streamlined operations management and workflow tracking.",
       solution: "Built a comprehensive construction operations platform with real-time project tracking and team coordination.",
@@ -115,7 +128,7 @@ export default function Home() {
       description: "A comprehensive construction operations management system featuring real-time project tracking, team coordination, and workflow automation. The platform enables construction teams to manage projects efficiently with integrated communication tools."
     },
     {
-      id: 2,
+      id: 3,
       title: "Tenant Management System",
       problem: "Property managers struggled with tenant communications and lease management.",
       solution: "Developed an integrated tenant management platform with automated notifications and document handling.",
@@ -128,7 +141,7 @@ export default function Home() {
       description: "A modern tenant management system that streamlines property management operations. Features include automated lease tracking, maintenance requests, payment processing, and integrated SMS/email notifications for tenant communications."
     },
     {
-      id: 3,
+      id: 4,
       title: "Ersatzteil-Store",
       problem: "Auto parts retailers needed an efficient e-commerce platform for spare parts.",
       solution: "Created a specialized e-commerce store with advanced part search and inventory management.",
@@ -141,7 +154,7 @@ export default function Home() {
       description: "A specialized e-commerce platform for automotive spare parts featuring advanced search capabilities, VIN-based part lookup, and comprehensive inventory management. The system provides detailed part specifications and compatibility information."
     },
     {
-      id: 4,
+      id: 5,
       title: "Blog Post Generator & Scheduler",
       problem: "Content creators needed automated blog generation and scheduling capabilities.",
       solution: "Built an AI-powered content generation system with automated publishing and scheduling.",
@@ -154,7 +167,7 @@ export default function Home() {
       description: "An automated blog post generation and scheduling platform powered by AI. Features include content generation, SEO optimization, multi-platform publishing, and advanced scheduling capabilities for consistent content delivery."
     },
     {
-      id: 5,
+      id: 6,
       title: "LotschFashion E-commerce",
       problem: "Small businesses struggled with managing online inventory and secure payments.",
       solution: "Built a WordPress-based e-commerce platform using Elementor and WooCommerce, integrating real-time inventory and secure payment gateways.",
@@ -167,7 +180,7 @@ export default function Home() {
       description: "A complete e-commerce solution for a fashion retailer featuring real-time inventory management, secure payment processing, and a responsive mobile-first design. The platform provides an intuitive shopping experience with personalized recommendations and easy checkout flow."
     },
     {
-      id: 6,
+      id: 7,
       title: "SK Information System",
       problem: "Youth organizations needed automated data management and analytics.",
       solution: "Developed a Laravel and React system with AI-powered content generation and real-time analytics.",
@@ -180,7 +193,7 @@ export default function Home() {
       description: "A comprehensive data management system for youth organizations featuring AI-assisted content generation, real-time analytics dashboards, and secure multi-user access controls. The platform streamlines administrative tasks and provides valuable insights for better program planning."
     },
     {
-      id: 7,
+      id: 8,
       title: "Water Refilling System",
       problem: "Water stations required efficient inventory and sales tracking.",
       solution: "Created a C# desktop app with Windows Forms for inventory and sales analytics.",
@@ -997,7 +1010,7 @@ export default function Home() {
                 theme === 'dark' ? 'bg-white' : 'bg-black'
               }`} />
 
-              {/* Full Stack Developer - Stanton Management LLC */}
+              {/* Full Stack Developer - Poleris LLC */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -1011,6 +1024,57 @@ export default function Home() {
                 }`} />
 
                 <div className={`md:mr-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
+                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                } backdrop-blur-md`}>
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div>
+                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>Full Stack Developer</h3>
+                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Poleris LLC</p>
+                      <p className={`text-sm code-font mt-1 ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
+                        October 2024 - Present
+                      </p>
+                    </div>
+                  </div>
+                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <p className="leading-relaxed">
+                      Developed and maintained modern SaaS web applications with focus on responsive design and optimal performance. Created engaging user interfaces and implemented full-stack solutions for business digital presence.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Full Stack"].map((tech, index) => (
+                        <span
+                          key={index}
+                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
+                            theme === 'dark'
+                              ? 'bg-cyan-900/30 text-cyan-300'
+                              : 'bg-cyan-100/50 text-cyan-800'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Full Stack Developer - Stanton Management LLC */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="relative"
+              >
+                {/* Timeline dot */}
+                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
+                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
+                }`} />
+
+                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
                   theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
                 } backdrop-blur-md`}>
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
@@ -1219,10 +1283,11 @@ export default function Home() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => {
-                const newX = Math.min(carouselX + 400, 0);
+                const cardWidth = 408; // 400 + 8 gap on each side
+                const newX = Math.min(carouselX + cardWidth, 0);
                 setCarouselX(newX);
               }}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
+              className={`hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
                 theme === 'dark'
                   ? 'bg-white text-black hover:bg-gray-200'
                   : 'bg-black text-white hover:bg-gray-800'
@@ -1237,11 +1302,12 @@ export default function Home() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => {
-                const maxScroll = -(projects.length * 400 - (typeof window !== 'undefined' ? window.innerWidth - 200 : 1000));
-                const newX = Math.max(carouselX - 400, maxScroll);
+                const cardWidth = 408; // 400 + 8 gap on each side
+                const maxScroll = -(projects.length * cardWidth - (typeof window !== 'undefined' ? window.innerWidth - 128 : 1000));
+                const newX = Math.max(carouselX - cardWidth, maxScroll);
                 setCarouselX(newX);
               }}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
+              className={`hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
                 theme === 'dark'
                   ? 'bg-white text-black hover:bg-gray-200'
                   : 'bg-black text-white hover:bg-gray-800'
@@ -1250,18 +1316,27 @@ export default function Home() {
               <ChevronRight className="h-6 w-6" />
             </motion.button>
 
-            <div className="overflow-hidden mx-16">
+            <div className="overflow-hidden mx-4 md:mx-16">
               <motion.div
-                className="flex gap-8 pb-8"
+                className="flex gap-4 md:gap-8 pb-8"
                 drag="x"
+                dragDirectionLock
                 dragConstraints={{
                   left: -(projects.length * 400 - (typeof window !== 'undefined' ? window.innerWidth - 200 : 1000)),
                   right: 0
                 }}
-                dragElastic={0.1}
+                dragElastic={0.2}
+                dragMomentum={false}
+                dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
                 animate={{ x: carouselX }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 onDragEnd={(e, info) => {
-                  setCarouselX(info.offset.x + carouselX);
+                  const cardWidth = typeof window !== 'undefined' && window.innerWidth < 640 ? window.innerWidth * 0.85 + 16 : 400;
+                  const newPosition = info.offset.x + carouselX;
+                  const snapPosition = Math.round(newPosition / cardWidth) * cardWidth;
+                  const maxScroll = -(projects.length * cardWidth - (typeof window !== 'undefined' ? window.innerWidth : 1000));
+                  const boundedPosition = Math.max(Math.min(snapPosition, 0), maxScroll);
+                  setCarouselX(boundedPosition);
                 }}
                 style={{ cursor: 'grab' }}
                 whileTap={{ cursor: 'grabbing' }}
@@ -1270,13 +1345,12 @@ export default function Home() {
                   <motion.div
                     key={project.id}
                     variants={itemVariants}
-                    whileHover={{ scale: 1.03, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2)" }}
-                    className={`flex-shrink-0 w-[380px] rounded-2xl overflow-hidden ${
+                    className={`flex-shrink-0 w-[85vw] sm:w-[380px] rounded-2xl overflow-hidden ${
                       theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                    } backdrop-blur-md shadow-lg transition-all duration-300`}
+                    } backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl`}
                     style={{ userSelect: 'none' }}
                   >
-                    <div className="relative w-full h-64 overflow-hidden">
+                    <div className="relative w-full h-48 md:h-64 overflow-hidden">
                       <Image
                         src={project.image}
                         alt={project.title}
@@ -1295,9 +1369,9 @@ export default function Home() {
                         </p>
                       </motion.div>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold code-font mb-3 tracking-tight">{project.title}</h3>
-                      <p className={`mb-4 text-sm leading-relaxed code-font ${
+                    <div className="p-4 md:p-6">
+                      <h3 className="text-lg md:text-xl font-semibold code-font mb-2 md:mb-3 tracking-tight">{project.title}</h3>
+                      <p className={`mb-3 md:mb-4 text-xs md:text-sm leading-relaxed code-font ${
                         theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                       }`}>
                         <strong>Problem:</strong> {project.problem}<br />
@@ -1359,7 +1433,8 @@ export default function Home() {
           <p className={`text-center mt-8 text-sm code-font ${
             theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            ← Drag or use arrows to explore more projects →
+            <span className="md:hidden">← Drag to explore more projects →</span>
+            <span className="hidden md:inline">← Drag or use arrows to explore more projects →</span>
           </p>
         </motion.div>
       </section>
