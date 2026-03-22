@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { motion, useAnimation, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import emailjs from '@emailjs/browser';
 import { Button } from "@/components/ui/button";
 import {
   Github,
@@ -75,7 +74,10 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [carouselX, setCarouselX] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // Refs
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   // Animation controls
   const controls = useAnimation();
@@ -103,6 +105,19 @@ export default function Home() {
   const projects: Project[] = [
     {
       id: 1,
+      title: "Gloryyfunding",
+      problem: "Prop trading firms needed a comprehensive platform for managing client challenges, payments, and trading evaluations.",
+      solution: "Built a full-featured prop trading platform with secure payment gateway integration, challenge tracking system, and risk management tools.",
+      challenges: "Implementing secure payment processing with fraud detection, PCI compliance, and seamless checkout experience while handling high-value transactions.",
+      impact: "Enabled traders to purchase challenges, track their progress, and withdraw profits through a secure, automated system.",
+      technologies: ["React", "Next.js", "Node.js", "PostgreSQL", "Stripe API", "Security", "TypeScript"],
+      image: "/gloryyfunding.png",
+      link: "https://gloryyfunding.com",
+      github: "https://github.com/grhey0115/gloryyfunding",
+      description: "A comprehensive proprietary trading firm platform featuring secure checkout with Stripe integration, challenge evaluation system, client dashboard with real-time metrics, and automated payout processing."
+    },
+    {
+      id: 2,
       title: "Polerisdigital.com",
       problem: "Businesses needed a comprehensive digital platform to establish their online presence and showcase services.",
       solution: "Created a modern SaaS website with responsive design, service showcases, and client engagement features.",
@@ -111,11 +126,11 @@ export default function Home() {
       technologies: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
       image: "/polerisdigital.png",
       link: "https://polerisdigital.com",
-      github: "#",
+      github: "https://github.com/grhey0115/polerisdigital",
       description: "A professional SaaS website platform featuring modern design principles, responsive layouts, and interactive elements. The platform showcases digital services, client portfolios, and provides seamless user experience across all devices."
     },
     {
-      id: 2,
+      id: 3,
       title: "Construction Ops",
       problem: "Construction companies needed streamlined operations management and workflow tracking.",
       solution: "Built a comprehensive construction operations platform with real-time project tracking and team coordination.",
@@ -124,11 +139,11 @@ export default function Home() {
       technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"],
       image: "/construction-ops.png",
       link: "https://constructionopsstanton.onrender.com",
-      github: "#",
+      github: "https://github.com/grhey0115/construction-ops",
       description: "A comprehensive construction operations management system featuring real-time project tracking, team coordination, and workflow automation. The platform enables construction teams to manage projects efficiently with integrated communication tools."
     },
     {
-      id: 3,
+      id: 4,
       title: "Tenant Management System",
       problem: "Property managers struggled with tenant communications and lease management.",
       solution: "Developed an integrated tenant management platform with automated notifications and document handling.",
@@ -137,11 +152,11 @@ export default function Home() {
       technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"],
       image: "/tenant-management.png",
       link: "https://tenant-dashboard-stanton.vercel.app/admin",
-      github: "#",
+      github: "https://github.com/grhey0115/tenant-management",
       description: "A modern tenant management system that streamlines property management operations. Features include automated lease tracking, maintenance requests, payment processing, and integrated SMS/email notifications for tenant communications."
     },
     {
-      id: 4,
+      id: 5,
       title: "Ersatzteil-Store",
       problem: "Auto parts retailers needed an efficient e-commerce platform for spare parts.",
       solution: "Created a specialized e-commerce store with advanced part search and inventory management.",
@@ -154,7 +169,7 @@ export default function Home() {
       description: "A specialized e-commerce platform for automotive spare parts featuring advanced search capabilities, VIN-based part lookup, and comprehensive inventory management. The system provides detailed part specifications and compatibility information."
     },
     {
-      id: 5,
+      id: 6,
       title: "Blog Post Generator & Scheduler",
       problem: "Content creators needed automated blog generation and scheduling capabilities.",
       solution: "Built an AI-powered content generation system with automated publishing and scheduling.",
@@ -167,7 +182,7 @@ export default function Home() {
       description: "An automated blog post generation and scheduling platform powered by AI. Features include content generation, SEO optimization, multi-platform publishing, and advanced scheduling capabilities for consistent content delivery."
     },
     {
-      id: 6,
+      id: 7,
       title: "LotschFashion E-commerce",
       problem: "Small businesses struggled with managing online inventory and secure payments.",
       solution: "Built a WordPress-based e-commerce platform using Elementor and WooCommerce, integrating real-time inventory and secure payment gateways.",
@@ -180,7 +195,7 @@ export default function Home() {
       description: "A complete e-commerce solution for a fashion retailer featuring real-time inventory management, secure payment processing, and a responsive mobile-first design. The platform provides an intuitive shopping experience with personalized recommendations and easy checkout flow."
     },
     {
-      id: 7,
+      id: 8,
       title: "SK Information System",
       problem: "Youth organizations needed automated data management and analytics.",
       solution: "Developed a Laravel and React system with AI-powered content generation and real-time analytics.",
@@ -193,7 +208,7 @@ export default function Home() {
       description: "A comprehensive data management system for youth organizations featuring AI-assisted content generation, real-time analytics dashboards, and secure multi-user access controls. The platform streamlines administrative tasks and provides valuable insights for better program planning."
     },
     {
-      id: 8,
+      id: 9,
       title: "Water Refilling System",
       problem: "Water stations required efficient inventory and sales tracking.",
       solution: "Created a C# desktop app with Windows Forms for inventory and sales analytics.",
@@ -276,9 +291,29 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Effect to track carousel scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (carouselRef.current) {
+        const container = carouselRef.current;
+        const cardWidth = 432;
+        const gap = 32;
+        const scrollLeft = container.scrollLeft;
+        const currentIndex = Math.round(scrollLeft / (cardWidth + gap));
+        setActiveSlide(Math.min(currentIndex, projects.length - 1));
+      }
+    };
+
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener('scroll', handleScroll);
+      return () => carousel.removeEventListener('scroll', handleScroll);
+    }
+  }, [projects.length]);
 
   // Function to toggle theme
   const toggleTheme = () => {
@@ -325,11 +360,12 @@ export default function Home() {
     const formData = new FormData(form);
     
     try {
+      const emailjs = (await import('@emailjs/browser')).default;
       await emailjs.sendForm(
-        'service_kwsrmt4', 
-        'template_1aztb6g', 
+        'service_kwsrmt4',
+        'template_1aztb6g',
         form,
-        'FEnNG0JVbIdUs4rTv' 
+        'FEnNG0JVbIdUs4rTv'
       );
       
       setSubmitStatus('success');
@@ -582,7 +618,7 @@ export default function Home() {
             {/* Theme Toggle and Mobile Menu Button */}
             <div className="flex items-center space-x-4">
               <motion.button
-                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
                 className={`p-2 rounded-full ${
@@ -590,11 +626,18 @@ export default function Home() {
                 }`}
                 aria-label="Toggle theme"
               >
-                {theme === 'dark' ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
+                <motion.div
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="h-5 w-5" />
+                  ) : (
+                    <Moon className="h-5 w-5" />
+                  )}
+                </motion.div>
               </motion.button>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -714,6 +757,7 @@ export default function Home() {
               src="/profile.png"
               alt="John Rey Amad"
               fill
+              sizes="192px"
               className="object-cover"
               priority
             />
@@ -1035,7 +1079,7 @@ export default function Home() {
                       <p className={`text-sm code-font mt-1 ${
                         theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                       }`}>
-                        October 2024 - Present
+                        October 2024 - February 2025
                       </p>
                     </div>
                   </div>
@@ -1045,6 +1089,57 @@ export default function Home() {
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Full Stack"].map((tech, index) => (
+                        <span
+                          key={index}
+                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
+                            theme === 'dark'
+                              ? 'bg-cyan-900/30 text-cyan-300'
+                              : 'bg-cyan-100/50 text-cyan-800'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Full Stack Developer - Gloryyfunding */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="relative"
+              >
+                {/* Timeline dot */}
+                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
+                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
+                }`} />
+
+                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
+                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                } backdrop-blur-md`}>
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div>
+                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>Full Stack Developer</h3>
+                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Gloryyfunding</p>
+                      <p className={`text-sm code-font mt-1 ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
+                        November 2024 - March 2025
+                      </p>
+                    </div>
+                  </div>
+                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <p className="leading-relaxed">
+                      Built a comprehensive prop trading firm platform featuring client dashboard, challenge evaluation system, and payment integration. Implemented secure checkout page with fraud detection and PCI compliance.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {["React", "Next.js", "Node.js", "PostgreSQL", "Stripe API", "Security", "Full Stack"].map((tech, index) => (
                         <span
                           key={index}
                           className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
@@ -1276,157 +1371,175 @@ export default function Home() {
             Featured Projects
           </motion.h2>
 
-          {/* Projects Carousel */}
-          <div className="relative">
+{/* Projects Carousel */}
+          <div className="relative group/carousel py-4">
             {/* Left Arrow */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={() => {
-                const cardWidth = 408; // 400 + 8 gap on each side
-                const newX = Math.min(carouselX + cardWidth, 0);
-                setCarouselX(newX);
+                if (carouselRef.current) {
+                  const cardWidth = 432;
+                  carouselRef.current.scrollBy({ left: -(cardWidth), behavior: 'smooth' });
+                }
               }}
-              className={`hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
+              className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 ${
                 theme === 'dark'
                   ? 'bg-white text-black hover:bg-gray-200'
                   : 'bg-black text-white hover:bg-gray-800'
-              } transition-all duration-300 ${carouselX >= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              disabled={carouselX >= 0}
+              }`}
+              aria-label="Previous project"
             >
               <ChevronLeft className="h-6 w-6" />
-            </motion.button>
+            </button>
 
             {/* Right Arrow */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={() => {
-                const cardWidth = 408; // 400 + 8 gap on each side
-                const maxScroll = -(projects.length * cardWidth - (typeof window !== 'undefined' ? window.innerWidth - 128 : 1000));
-                const newX = Math.max(carouselX - cardWidth, maxScroll);
-                setCarouselX(newX);
+                if (carouselRef.current) {
+                  const cardWidth = 432;
+                  carouselRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                }
               }}
-              className={`hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg ${
+              className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full shadow-lg transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 ${
                 theme === 'dark'
                   ? 'bg-white text-black hover:bg-gray-200'
                   : 'bg-black text-white hover:bg-gray-800'
-              } transition-all duration-300`}
+              }`}
+              aria-label="Next project"
             >
               <ChevronRight className="h-6 w-6" />
-            </motion.button>
+            </button>
 
-            <div className="overflow-hidden mx-4 md:mx-16">
-              <motion.div
-                className="flex gap-4 md:gap-8 pb-8"
-                drag="x"
-                dragDirectionLock
-                dragConstraints={{
-                  left: -(projects.length * 400 - (typeof window !== 'undefined' ? window.innerWidth - 200 : 1000)),
-                  right: 0
-                }}
-                dragElastic={0.2}
-                dragMomentum={false}
-                dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-                animate={{ x: carouselX }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                onDragEnd={(e, info) => {
-                  const cardWidth = typeof window !== 'undefined' && window.innerWidth < 640 ? window.innerWidth * 0.85 + 16 : 400;
-                  const newPosition = info.offset.x + carouselX;
-                  const snapPosition = Math.round(newPosition / cardWidth) * cardWidth;
-                  const maxScroll = -(projects.length * cardWidth - (typeof window !== 'undefined' ? window.innerWidth : 1000));
-                  const boundedPosition = Math.max(Math.min(snapPosition, 0), maxScroll);
-                  setCarouselX(boundedPosition);
-                }}
-                style={{ cursor: 'grab' }}
-                whileTap={{ cursor: 'grabbing' }}
-              >
-                {projects.map((project) => (
-                  <motion.div
-                    key={project.id}
-                    variants={itemVariants}
-                    className={`flex-shrink-0 w-[85vw] sm:w-[380px] rounded-2xl overflow-hidden ${
-                      theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                    } backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl`}
-                    style={{ userSelect: 'none' }}
-                  >
-                    <div className="relative w-full h-48 md:h-64 overflow-hidden">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        className="transition-transform duration-500 group-hover:scale-110 pointer-events-none"
-                      />
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <p className="text-sm text-white code-font">
-                          <strong>Challenges:</strong> {project.challenges}
-                        </p>
-                      </motion.div>
-                    </div>
-                    <div className="p-4 md:p-6">
-                      <h3 className="text-lg md:text-xl font-semibold code-font mb-2 md:mb-3 tracking-tight">{project.title}</h3>
-                      <p className={`mb-3 md:mb-4 text-xs md:text-sm leading-relaxed code-font ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                      }`}>
-                        <strong>Problem:</strong> {project.problem}<br />
-                        <strong>Solution:</strong> {project.solution}<br />
-                        <strong>Impact:</strong> {project.impact}
+            {/* Scrollable Container */}
+            <div
+              ref={carouselRef}
+              id="projects-carousel"
+              className="relative flex gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-12 md:px-20 pb-8"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowLeft') {
+                  carouselRef.current?.scrollBy({ left: -432, behavior: 'smooth' });
+                } else if (e.key === 'ArrowRight') {
+                  carouselRef.current?.scrollBy({ left: 432, behavior: 'smooth' });
+                }
+              }}
+            >
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="project-card flex-shrink-0 w-[85vw] sm:w-[400px] snap-start rounded-2xl overflow-hidden ${
+                    theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                  } backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]"
+                >
+                  <div className="relative w-full h-48 md:h-64 overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      sizes="(max-width: 640px) 85vw, 400px"
+                      style={{ objectFit: "cover" }}
+                      className="transition-transform duration-500 pointer-events-none"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                      <p className="text-sm text-white code-font line-clamp-3">
+                        <strong>Challenges:</strong> {project.challenges}
                       </p>
+                    </div>
+                  </div>
+                  <div className="p-4 md:p-6">
+                    <h3 className="text-lg md:text-xl font-semibold code-font mb-2 md:mb-3 tracking-tight">{project.title}</h3>
+                    <p className={`mb-3 md:mb-4 text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      <strong>Problem:</strong> {project.problem}
+                    </p>
 
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech, index) => (
-                          <span
-                            key={index}
-                            className={`text-xs px-2 py-1 rounded-full code-font font-medium tracking-tighter ${
-                              theme === 'dark'
-                                ? 'bg-indigo-900/30 text-indigo-300'
-                                : 'bg-indigo-100/50 text-indigo-800'
-                            }`}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.technologies.slice(0, 3).map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className={`text-xs px-2 py-1 rounded-full code-font font-medium tracking-tighter ${
+                            theme === 'dark'
+                              ? 'bg-indigo-900/30 text-indigo-300'
+                              : 'bg-indigo-100/50 text-indigo-800'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span className={`text-xs px-2 py-1 rounded-full code-font font-medium tracking-tighter ${
+                          theme === 'dark'
+                            ? 'bg-gray-800 text-gray-400'
+                            : 'bg-gray-200 text-gray-600'
+                        }`}>
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
 
-                      <div className="flex space-x-4">
-                        <motion.a
-                          href={project.link}
+                    <div className="flex space-x-4">
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
+                          theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
+                        }`}
+                      >
+                        <ExternalLink className="h-4 w-4 mr-1" />
+                        Demo
+                      </a>
+                      {project.github && project.github !== "#" && (
+                        <a
+                          href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={{ x: 3 }}
                           className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
                             theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
                           }`}
-                          onClick={(e) => e.stopPropagation()}
                         >
-                          🌐 Live Demo
-                        </motion.a>
-                        {project.github && (
-                          <motion.a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ x: 3 }}
-                            className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
-                              theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
-                            }`}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Github className="h-4 w-4 mr-1" />
-                            Code
-                          </motion.a>
-                        )}
-                      </div>
+                          <Github className="h-4 w-4 mr-1" />
+                          Code
+                        </a>
+                      )}
                     </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Scroll Indicator Dots */}
+            <div className="flex justify-center gap-2 mt-4">
+              {projects.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    if (carouselRef.current) {
+                      const cardWidth = 432;
+                      carouselRef.current.scrollTo({
+                        left: index * (cardWidth + 32),
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === activeSlide
+                      ? theme === 'dark'
+                        ? 'bg-white w-6'
+                        : 'bg-black w-6'
+                      : theme === 'dark'
+                        ? 'bg-gray-600 w-2 hover:bg-gray-400'
+                        : 'bg-gray-400 w-2 hover:bg-gray-600'
+                  }`}
+                  aria-label={`Go to project ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
 
