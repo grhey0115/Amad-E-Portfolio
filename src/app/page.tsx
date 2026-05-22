@@ -14,16 +14,13 @@ import {
   Menu,
   X,
   ArrowUp,
-  ExternalLink,
   Sun,
   Moon,
-  Calendar,
   User,
   Briefcase,
   FileCode,
   PenTool,
   Send,
-  MessageSquare,
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
@@ -33,34 +30,13 @@ type Theme = 'dark' | 'light';
 interface Project {
   id: number;
   title: string;
+  role: string;
   problem: string;
   solution: string;
   challenges: string;
   impact: string;
   technologies: string[];
   image: string;
-  link: string;
-  github?: string;
-  description?: string;
-}
-
-interface TestimonialType {
-  id: number;
-  name: string;
-  role: string;
-  company: string;
-  image: string;
-  text: string;
-}
-
-interface BlogPostType {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  image: string;
-  slug: string;
 }
 
 export default function Home() {
@@ -68,7 +44,6 @@ export default function Home() {
   const [theme, setTheme] = useState<Theme>('dark');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeNav, setActiveNav] = useState<'developer' | 'designer'>('developer');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSection, setActiveSection] = useState('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -106,118 +81,101 @@ export default function Home() {
     {
       id: 1,
       title: "Gloryyfunding",
+      role: "Full-stack development, checkout architecture, dashboard UX",
       problem: "Prop trading firms needed a comprehensive platform for managing client challenges, payments, and trading evaluations.",
       solution: "Built a full-featured prop trading platform with secure payment gateway integration, challenge tracking system, and risk management tools.",
       challenges: "Implementing secure payment processing with fraud detection, PCI compliance, and seamless checkout experience while handling high-value transactions.",
       impact: "Enabled traders to purchase challenges, track their progress, and withdraw profits through a secure, automated system.",
       technologies: ["React", "Next.js", "Node.js", "PostgreSQL", "Stripe API", "Security", "TypeScript"],
-      image: "/gloryyfunding.png",
-      link: "https://gloryyfunding.com",
-      github: "https://github.com/grhey0115/gloryyfunding",
-      description: "A comprehensive proprietary trading firm platform featuring secure checkout with Stripe integration, challenge evaluation system, client dashboard with real-time metrics, and automated payout processing."
+      image: "/gloryyfunding.png"
     },
     {
       id: 2,
       title: "Polerisdigital.com",
+      role: "Frontend development, interaction design, responsive delivery",
       problem: "Businesses needed a comprehensive digital platform to establish their online presence and showcase services.",
       solution: "Created a modern SaaS website with responsive design, service showcases, and client engagement features.",
       challenges: "Balancing aesthetic appeal with functionality while ensuring optimal performance across devices.",
       impact: "Provided businesses with a professional digital platform that enhanced their online visibility and client engagement.",
       technologies: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
-      image: "/polerisdigital.png",
-      link: "https://polerisdigital.com",
-      github: "https://github.com/grhey0115/polerisdigital",
-      description: "A professional SaaS website platform featuring modern design principles, responsive layouts, and interactive elements. The platform showcases digital services, client portfolios, and provides seamless user experience across all devices."
+      image: "/polerisdigital.png"
     },
     {
       id: 3,
       title: "Construction Ops",
+      role: "Product engineering, realtime workflows, team coordination",
       problem: "Construction companies needed streamlined operations management and workflow tracking.",
       solution: "Built a comprehensive construction operations platform with real-time project tracking and team coordination.",
       challenges: "Managing complex workflows and ensuring real-time updates across multiple teams.",
       impact: "Streamlined construction workflows and improved team collaboration.",
       technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"],
-      image: "/construction-ops.png",
-      link: "https://constructionopsstanton.onrender.com",
-      github: "https://github.com/grhey0115/construction-ops",
-      description: "A comprehensive construction operations management system featuring real-time project tracking, team coordination, and workflow automation. The platform enables construction teams to manage projects efficiently with integrated communication tools."
+      image: "/construction-ops.png"
     },
     {
       id: 4,
       title: "Tenant Management System",
+      role: "Full-stack development, notifications, admin workflow design",
       problem: "Property managers struggled with tenant communications and lease management.",
       solution: "Developed an integrated tenant management platform with automated notifications and document handling.",
       challenges: "Ensuring seamless communication between property managers and tenants.",
       impact: "Improved tenant satisfaction and reduced administrative overhead.",
       technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"],
-      image: "/tenant-management.png",
-      link: "https://tenant-dashboard-stanton.vercel.app/admin",
-      github: "https://github.com/grhey0115/tenant-management",
-      description: "A modern tenant management system that streamlines property management operations. Features include automated lease tracking, maintenance requests, payment processing, and integrated SMS/email notifications for tenant communications."
+      image: "/tenant-management.png"
     },
     {
       id: 5,
       title: "Ersatzteil-Store",
+      role: "Shopware development, catalog architecture, API integration",
       problem: "Auto parts retailers needed an efficient e-commerce platform for spare parts.",
       solution: "Created a specialized e-commerce store with advanced part search and inventory management.",
       challenges: "Building intuitive search functionality for technical automotive parts.",
       impact: "Enhanced customer experience and streamlined parts procurement.",
       technologies: ["Shopware 6", "PHP", "MySQL", "Vue.js", "REST API"],
-      image: "/ersatzteil-store.png",
-      link: "https://ersatzteil-store.ch/",
-      github: "https://github.com/yourusername/ersatzteil-store",
-      description: "A specialized e-commerce platform for automotive spare parts featuring advanced search capabilities, VIN-based part lookup, and comprehensive inventory management. The system provides detailed part specifications and compatibility information."
+      image: "/ersatzteil-store.png"
     },
     {
       id: 6,
       title: "Blog Post Generator & Scheduler",
+      role: "Automation engineering, CMS workflow, AI-assisted tooling",
       problem: "Content creators needed automated blog generation and scheduling capabilities.",
       solution: "Built an AI-powered content generation system with automated publishing and scheduling.",
       challenges: "Integrating AI content generation while maintaining quality and consistency.",
       impact: "Automated content workflow and increased publishing efficiency.",
       technologies: ["Node.js", "AI Integration", "CMS", "React", "MongoDB"],
-      image: "/blog-generator.png",
-      link: "#",
-      github: "https://github.com/yourusername/blog-generator",
-      description: "An automated blog post generation and scheduling platform powered by AI. Features include content generation, SEO optimization, multi-platform publishing, and advanced scheduling capabilities for consistent content delivery."
+      image: "/blog-generator.png"
     },
     {
       id: 7,
       title: "LotschFashion E-commerce",
+      role: "WordPress development, WooCommerce setup, mobile optimization",
       problem: "Small businesses struggled with managing online inventory and secure payments.",
       solution: "Built a WordPress-based e-commerce platform using Elementor and WooCommerce, integrating real-time inventory and secure payment gateways.",
       challenges: "Ensuring seamless inventory sync and optimizing for mobile performance.",
       impact: "Increased sales by 30% and improved user retention with an intuitive UI.",
       technologies: ["Wordpress", "PHP", "MySQL", "Elementor", "WooCommerce"],
-      image: "/lotschfashion.png",
-      link: "https://demo.ayon.ph",
-      github: "https://github.com/grhey0115/lotschfashion-E-commerce",
-      description: "A complete e-commerce solution for a fashion retailer featuring real-time inventory management, secure payment processing, and a responsive mobile-first design. The platform provides an intuitive shopping experience with personalized recommendations and easy checkout flow."
+      image: "/lotschfashion.png"
     },
     {
       id: 8,
       title: "SK Information System",
+      role: "Laravel development, data modeling, analytics dashboards",
       problem: "Youth organizations needed automated data management and analytics.",
       solution: "Developed a Laravel and React system with AI-powered content generation and real-time analytics.",
       challenges: "Integrating AI models and ensuring data security across users.",
       impact: "Reduced manual reporting time by 40% and enhanced decision-making.",
       technologies: ["Laravel", "React", "MySQL", "Filament", "AI Integration"],
-      image: "/skyouth.png",
-      link: "https://skyouthfiles.site",
-      github: "https://github.com/grhey0115/YouthFiles",
-      description: "A comprehensive data management system for youth organizations featuring AI-assisted content generation, real-time analytics dashboards, and secure multi-user access controls. The platform streamlines administrative tasks and provides valuable insights for better program planning."
+      image: "/skyouth.png"
     },
     {
       id: 9,
       title: "Water Refilling System",
+      role: "Desktop app development, reporting, operational UX",
       problem: "Water stations required efficient inventory and sales tracking.",
       solution: "Created a C# desktop app with Windows Forms for inventory and sales analytics.",
       challenges: "Designing a user-friendly interface for non-technical staff.",
       impact: "Improved operational efficiency by 25% and reduced errors.",
       technologies: ["C#", "Windows Forms", "Chart.js", "SQL Server"],
-      image: "/aquaease.png",
-      link: "https://example.com/project3",
-      description: "A desktop application for water refilling stations that manages inventory, tracks sales, and provides comprehensive analytics. The system features an intuitive interface designed for non-technical users, automated reporting, and integration with point-of-sale hardware."
+      image: "/aquaease.png"
     },
   ];
 
@@ -232,6 +190,81 @@ export default function Home() {
     { name: "Experience", href: "#experience", icon: Briefcase },
     { name: "Projects", href: "#projects", icon: FileCode },
     { name: "Contact", href: "#contact", icon: Send }
+  ];
+
+  const experiences = [
+    {
+      title: "Full Stack Developer",
+      company: "Poleris LLC",
+      context: "SaaS and business websites",
+      summary: "Delivered responsive web experiences for digital service clients, with emphasis on clean UI, performance, and reusable frontend patterns.",
+      highlights: [
+        "Built polished Next.js pages and components for service-focused business sites.",
+        "Used Tailwind CSS and Framer Motion to create responsive interfaces with restrained motion.",
+        "Turned client content and service offerings into clearer product pages and calls to action."
+      ],
+      technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"]
+    },
+    {
+      title: "Full Stack Developer",
+      company: "Gloryyfunding",
+      context: "Prop trading platform",
+      summary: "Built customer-facing and internal features for a trading challenge platform, including checkout, dashboards, evaluation flows, and payout-related workflows.",
+      highlights: [
+        "Developed a secure checkout experience around high-value challenge purchases.",
+        "Built dashboard views for traders to follow account progress and evaluation status.",
+        "Worked on data flows for challenge tracking, client management, and operational review."
+      ],
+      technologies: ["React", "Next.js", "Node.js", "PostgreSQL", "Stripe API", "TypeScript"]
+    },
+    {
+      title: "Full Stack Developer",
+      company: "Stanton Management LLC",
+      context: "Operations and property tools",
+      summary: "Created internal tools for construction operations and tenant management, focused on communication, workflow visibility, and administrative efficiency.",
+      highlights: [
+        "Built project tracking and coordination features for construction workflows.",
+        "Developed tenant communication flows with notification support.",
+        "Designed admin screens around practical day-to-day property and operations tasks."
+      ],
+      technologies: ["Next.js", "Supabase", "Twilio", "React", "TypeScript"]
+    },
+    {
+      title: "Web Developer / CMS Developer",
+      company: "Freelance",
+      context: "Ecommerce and CMS",
+      summary: "Built and customized WordPress, WooCommerce, and Shopware experiences for clients that needed storefronts, catalog workflows, and content tools.",
+      highlights: [
+        "Customized ecommerce storefronts with product, inventory, and checkout considerations.",
+        "Worked with CMS structures that made content updates easier for non-technical users.",
+        "Handled PHP-based plugin and theme adjustments across WordPress and Shopware projects."
+      ],
+      technologies: ["Shopware 6", "WordPress", "WooCommerce", "PHP", "MySQL", "CMS"]
+    },
+    {
+      title: "Automation Developer",
+      company: "Freelance",
+      context: "Content systems",
+      summary: "Built blog generation and scheduling workflows that helped content teams reduce repetitive publishing work.",
+      highlights: [
+        "Created scheduling logic for planned content releases.",
+        "Connected content generation workflows with CMS-style review and publishing steps.",
+        "Focused automation on repeatable tasks while keeping human review in the process."
+      ],
+      technologies: ["JavaScript", "Node.js", "CMS", "Automation", "API Integration"]
+    },
+    {
+      title: "Software Engineer Intern",
+      company: "RAFI-MFI IT Unit",
+      context: "Mobile and API development",
+      summary: "Contributed to the Kawani app by building a purchase requisition service across Flutter screens and .NET API endpoints.",
+      highlights: [
+        "Implemented requisition workflows for request creation, review, and status tracking.",
+        "Connected mobile UI states with backend API responses for a smoother internal user flow.",
+        "Worked inside an existing engineering process, balancing feature delivery with maintainable code."
+      ],
+      technologies: ["Flutter", ".NET", "API Development", "Mobile UI", "State Management"]
+    }
   ];
 
   // Effect to observe sections and update active section
@@ -379,21 +412,50 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen font-[Poppins] transition-colors duration-500 ${
+    <div className={`min-h-screen transition-colors duration-500 ${
       theme === 'dark'
         ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-gray-50'
         : 'bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 text-gray-900'
     } overflow-x-hidden relative`}>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
         html {
           scroll-behavior: smooth;
         }
         body {
-          font-family: 'Poppins', sans-serif;
+          font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
         .code-font {
-          font-family: 'Space Mono', monospace;
+          font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        }
+
+        .screen-backdrop {
+          background-image:
+            linear-gradient(to right, var(--screen-line) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--screen-line) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--scan-line) 1px, transparent 1px);
+          background-size: 64px 64px, 64px 64px, 100% 8px;
+          mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%);
+        }
+
+        .screen-backdrop::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at center, transparent 0%, var(--screen-vignette) 74%);
+        }
+
+        .hero-doodles {
+          animation: sketchFloat 9s ease-in-out infinite;
+        }
+
+        @keyframes sketchFloat {
+          0%, 100% {
+            transform: translate3d(0, 0, 0) rotate(-1deg);
+          }
+          50% {
+            transform: translate3d(0, -14px, 0) rotate(1deg);
+          }
         }
 
         .loader {
@@ -534,6 +596,16 @@ export default function Home() {
           }
         }
       `}</style>
+
+      <div
+        aria-hidden="true"
+        className="screen-backdrop pointer-events-none fixed inset-0 z-0"
+        style={{
+          '--screen-line': theme === 'dark' ? 'rgba(255,255,255,0.055)' : 'rgba(0,0,0,0.055)',
+          '--scan-line': theme === 'dark' ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.03)',
+          '--screen-vignette': theme === 'dark' ? 'rgba(3,7,18,0.52)' : 'rgba(249,250,251,0.48)',
+        } as React.CSSProperties}
+      />
 
       {/* Loading Animation */}
       <AnimatePresence>
@@ -746,6 +818,25 @@ export default function Home() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="min-h-screen flex items-center justify-center relative pt-20"
       >
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: isLoading ? 0 : theme === 'dark' ? 0.34 : 0.24, scale: 1 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="hero-doodles pointer-events-none absolute inset-x-0 top-20 z-0 hidden h-[calc(100%-5rem)] lg:block"
+        >
+          <Image
+            src="/hero-tech-doodles.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className={`object-contain ${
+              theme === 'dark' ? 'invert brightness-125' : 'brightness-75'
+            }`}
+            priority
+          />
+        </motion.div>
+
         <div className="container mx-auto px-6 text-center relative z-10 pt-16">
           <motion.div
             initial={{ scale: 0.8, opacity: 0, y: 20 }}
@@ -781,7 +872,7 @@ export default function Home() {
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}
           >
-            {activeNav === 'developer' ? 'Full Stack Developer & Code Architect' : 'Creative Designer & UI Innovator'}
+            {activeNav === 'developer' ? 'Full Stack Developer for web apps, CMS, and automation' : 'Designer-minded developer focused on clean product experiences'}
           </motion.p>
           <motion.p 
             initial={{ scale: 0.9, opacity: 0 }}
@@ -792,15 +883,26 @@ export default function Home() {
             }`}
           >
             {activeNav === 'developer' 
-              ? 'Building robust, scalable solutions with modern technologies' 
-              : 'Crafting intuitive, visually stunning digital experiences'}
+              ? 'I build production-ready tools with React, Next.js, Laravel, PHP, Supabase, and AI integrations for clients who need software that actually supports daily operations.' 
+              : 'I pair practical engineering with thoughtful UI decisions so dashboards, storefronts, and internal systems feel clear, fast, and easy to use.'}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isLoading ? 0 : 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+            className={`max-w-2xl mx-auto mb-8 text-sm md:text-base leading-relaxed ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
+            Recent work includes trading dashboards, property tools, ecommerce stores, CMS workflows, and internal systems for teams that need practical software.
           </motion.p>
 
           {/* Developer/Designer Tabs */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isLoading ? 0 : 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
+            transition={{ delay: 1.25, duration: 0.6 }}
             className="flex justify-center mb-8"
           >
             <div className={`inline-flex p-1 rounded-full ${
@@ -829,7 +931,7 @@ export default function Home() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isLoading ? 0 : 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
+            transition={{ delay: 1.45, duration: 0.6 }}
             className="flex flex-wrap justify-center gap-4 mb-12"
           >
             <Button
@@ -840,7 +942,7 @@ export default function Home() {
                   : 'bg-black text-white hover:bg-gray-800'
               }`}
             >
-              <a href="#projects">Explore My Work</a>
+              <a href="#projects">View Case Studies</a>
             </Button>
             <Button
               asChild
@@ -851,7 +953,7 @@ export default function Home() {
                   : 'border-black text-black hover:bg-black/10'
               }`}
             >
-              <a href="#contact">Hire Me</a>
+              <a href="#contact">Start a Project</a>
             </Button>
           </motion.div>
           
@@ -942,12 +1044,12 @@ export default function Home() {
             <p className={`text-lg mb-6 leading-relaxed ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
-              I'm John Rey Amad, a full-stack developer and designer passionate about creating impactful digital solutions. With a degree in Information Technology, I blend technical expertise with creative design to build user-centric applications.
+              I'm John Rey Amad, a full-stack developer who turns business workflows into dependable web apps, CMS tools, dashboards, and automation systems. I like working close to the actual problem: how users move through the product, where teams lose time, and which parts of the system need to be simple, fast, and maintainable.
             </p>
             <p className={`text-lg leading-relaxed ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
-              My niche expertise in AI integration and modern frameworks like React and Laravel drives my work.
+              My strongest stack is React, Next.js, Laravel, PHP, TypeScript, Supabase, and WordPress/Shopware. I also build AI-assisted workflows when they make the product more useful rather than just more flashy.
             </p>
           </motion.div>
         </div>
@@ -971,15 +1073,15 @@ export default function Home() {
             {(activeNav === 'developer' ? [
               {
                 title: "Frontend Development",
-                skills: ["React & Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Redux", "Responsive Design"]
+                skills: ["React & Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive UI", "Dashboard UX"]
               },
               {
                 title: "Backend Development",
-                skills: ["Node.js & Express", "Laravel & PHP", "MongoDB & MySQL", "RESTful APIs", "Authentication", "AI Integration"]
+                skills: ["Laravel & PHP", "Node.js", "Supabase", "MySQL & PostgreSQL", "REST APIs", "Authentication"]
               },
               {
                 title: "DevOps & Tools",
-                skills: ["Git & GitHub", "Docker & CI/CD", "AWS & Vercel", "Testing", "Agile Methodologies", "Open Source"]
+                skills: ["Git & GitHub", "Vercel", "Docker Basics", "WordPress", "Shopware 6", "AI Integration"]
               }
             ] : [
               {
@@ -1040,317 +1142,105 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`text-4xl font-semibold code-font text-center mb-16 tracking-tight ${
+            className={`text-4xl font-semibold code-font text-center mb-4 tracking-tight ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
             Professional Experience
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className={`max-w-2xl mx-auto text-center mb-14 text-base leading-relaxed ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
+            Roles and client work where I shipped practical software across web apps, ecommerce, internal tools, mobile features, and automation.
+          </motion.p>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="relative space-y-12">
-              {/* Timeline line */}
-              <div className={`absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 md:block hidden ${
-                theme === 'dark' ? 'bg-white' : 'bg-black'
-              }`} />
+          <div className="max-w-5xl mx-auto">
+            <div className={`relative border-l pl-6 md:pl-10 space-y-8 ${
+              theme === 'dark' ? 'border-white/15' : 'border-black/15'
+            }`}>
+              {experiences.map((experience, index) => (
+                <motion.article
+                  key={`${experience.company}-${experience.title}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  className={`relative rounded-lg border p-5 md:p-6 shadow-lg ${
+                    theme === 'dark'
+                      ? 'border-white/10 bg-gray-900/70'
+                      : 'border-black/10 bg-white/75'
+                  } backdrop-blur-md`}
+                >
+                  <span className={`absolute -left-[31px] md:-left-[47px] top-7 h-3 w-3 rounded-full ring-4 ${
+                    theme === 'dark'
+                      ? 'bg-cyan-300 ring-gray-950'
+                      : 'bg-cyan-700 ring-gray-50'
+                  }`} />
 
-              {/* Full Stack Developer - Poleris LLC */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
-                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
-                }`} />
-
-                <div className={`md:mr-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md`}>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                  <div>
                     <div>
-                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
-                        theme === 'dark' ? 'text-white' : 'text-black'
-                      }`}>Full Stack Developer</h3>
-                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Poleris LLC</p>
-                      <p className={`text-sm code-font mt-1 ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      <p className={`mb-2 text-xs uppercase code-font ${
+                        theme === 'dark' ? 'text-cyan-300' : 'text-cyan-700'
                       }`}>
-                        October 2024 - February 2025
+                        {experience.context}
+                      </p>
+                      <h3 className={`text-xl md:text-2xl font-semibold code-font tracking-tight ${
+                        theme === 'dark' ? 'text-white' : 'text-black'
+                      }`}>
+                        {experience.title}
+                      </h3>
+                      <p className={`mt-1 text-base ${
+                        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        {experience.company}
                       </p>
                     </div>
                   </div>
-                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
-                    <p className="leading-relaxed">
-                      Developed and maintained modern SaaS web applications with focus on responsive design and optimal performance. Created engaging user interfaces and implemented full-stack solutions for business digital presence.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Full Stack"].map((tech, index) => (
-                        <span
-                          key={index}
-                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark'
-                              ? 'bg-cyan-900/30 text-cyan-300'
-                              : 'bg-cyan-100/50 text-cyan-800'
-                          }`}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
 
-              {/* Full Stack Developer - Gloryyfunding */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
-                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
-                }`} />
+                  <p className={`mt-5 leading-relaxed ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    {experience.summary}
+                  </p>
 
-                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md`}>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div>
-                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
-                        theme === 'dark' ? 'text-white' : 'text-black'
-                      }`}>Full Stack Developer</h3>
-                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Gloryyfunding</p>
-                      <p className={`text-sm code-font mt-1 ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                      }`}>
-                        November 2024 - March 2025
-                      </p>
-                    </div>
-                  </div>
-                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
-                    <p className="leading-relaxed">
-                      Built a comprehensive prop trading firm platform featuring client dashboard, challenge evaluation system, and payment integration. Implemented secure checkout page with fraud detection and PCI compliance.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["React", "Next.js", "Node.js", "PostgreSQL", "Stripe API", "Security", "Full Stack"].map((tech, index) => (
-                        <span
-                          key={index}
-                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark'
-                              ? 'bg-cyan-900/30 text-cyan-300'
-                              : 'bg-cyan-100/50 text-cyan-800'
-                          }`}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                  <ul className={`mt-5 space-y-3 text-sm leading-relaxed ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    {experience.highlights.map((highlight) => (
+                      <li key={highlight} className="flex gap-3">
+                        <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
+                          theme === 'dark' ? 'bg-cyan-300' : 'bg-cyan-700'
+                        }`} />
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-              {/* Full Stack Developer - Stanton Management LLC */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
-                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
-                }`} />
-
-                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md`}>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div>
-                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
-                        theme === 'dark' ? 'text-white' : 'text-black'
-                      }`}>Full Stack Developer</h3>
-                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Stanton Management LLC</p>
-                      <p className={`text-sm code-font mt-1 ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                      }`}>
-                        Freelance - Project Based
-                      </p>
-                    </div>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {experience.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
+                          theme === 'dark'
+                            ? 'bg-cyan-900/30 text-cyan-300'
+                            : 'bg-cyan-100/60 text-cyan-800'
+                        }`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
                   </div>
-                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
-                    <p className="leading-relaxed">
-                      Created construction operations and tenant management system. Developed comprehensive solutions for streamlining construction workflows and tenant communications.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["Next.js", "Supabase", "Twilio", "React", "TypeScript", "Full Stack"].map((tech, index) => (
-                        <span
-                          key={index}
-                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark'
-                              ? 'bg-cyan-900/30 text-cyan-300'
-                              : 'bg-cyan-100/50 text-cyan-800'
-                          }`}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Freelance Web Developer/CMS Developer */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
-                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
-                }`} />
-
-                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md`}>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div>
-                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
-                        theme === 'dark' ? 'text-white' : 'text-black'
-                      }`}>Web Developer / CMS Developer</h3>
-                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Freelance</p>
-                    </div>
-                  </div>
-                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
-                    <p className="leading-relaxed">
-                      Developed custom plugins for e-commerce and content management platforms. Specialized in creating tailored solutions for Shopware 6 and WordPress ecosystems.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["Shopware 6", "WordPress", "PHP", "Plugin Development", "CMS", "E-commerce"].map((tech, index) => (
-                        <span
-                          key={index}
-                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark'
-                              ? 'bg-cyan-900/30 text-cyan-300'
-                              : 'bg-cyan-100/50 text-cyan-800'
-                          }`}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Freelance Web Developer - Blog & CMS */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
-                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
-                }`} />
-
-                <div className={`md:mr-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md`}>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div>
-                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
-                        theme === 'dark' ? 'text-white' : 'text-black'
-                      }`}>Web Developer</h3>
-                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Freelance</p>
-                    </div>
-                  </div>
-                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
-                    <p className="leading-relaxed">
-                      Developed blog post generator and scheduler with integrated CMS functionality. Built automated content publishing systems with scheduling capabilities.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["CMS Development", "Automation", "Content Scheduling", "JavaScript", "API Integration"].map((tech, index) => (
-                        <span
-                          key={index}
-                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark'
-                              ? 'bg-cyan-900/30 text-cyan-300'
-                              : 'bg-cyan-100/50 text-cyan-800'
-                          }`}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Software Engineer Intern */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="relative"
-              >
-                {/* Timeline dot */}
-                <div className={`absolute left-1/2 transform -translate-x-1/2 top-0 w-4 h-4 rounded-full border-4 md:block hidden ${
-                  theme === 'dark' ? 'bg-white border-gray-900' : 'bg-black border-white'
-                }`} />
-
-                <div className={`md:ml-auto md:w-[calc(50%-2rem)] w-full p-6 rounded-2xl shadow-xl ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                } backdrop-blur-md`}>
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                    <div>
-                      <h3 className={`text-2xl font-semibold code-font mb-2 ${
-                        theme === 'dark' ? 'text-white' : 'text-black'
-                      }`}>Software Engineer Intern</h3>
-                      <p className={`text-lg ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>RAFI-MFI IT Unit</p>
-                    </div>
-                    <p className={`text-sm code-font mt-2 md:mt-0 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      January 2025 - June 2025
-                    </p>
-                  </div>
-                  <div className={`space-y-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
-                    <p className="leading-relaxed">
-                      Developed a Service in their Kawani App for Purchase Requisitions, using Flutter and .NET API framework.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["Flutter", ".NET", "API Development", "Mobile Development", "State Management"].map((tech, index) => (
-                        <span
-                          key={index}
-                          className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
-                            theme === 'dark'
-                              ? 'bg-cyan-900/30 text-cyan-300'
-                              : 'bg-cyan-100/50 text-cyan-800'
-                          }`}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                </motion.article>
+              ))}
             </div>
           </div>
+
         </div>
       </section>
 
@@ -1364,12 +1254,20 @@ export default function Home() {
         >
           <motion.h2
             variants={itemVariants}
-            className={`text-4xl font-semibold code-font text-center mb-16 tracking-tight ${
+            className={`text-4xl font-semibold code-font text-center mb-4 tracking-tight ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
-            Featured Projects
+            Selected Case Studies
           </motion.h2>
+          <motion.p
+            variants={itemVariants}
+            className={`max-w-2xl mx-auto text-center mb-12 text-base leading-relaxed ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
+            A focused look at the problems, implementation decisions, and outcomes behind each build. Public links are intentionally omitted here to keep client work and private repositories private.
+          </motion.p>
 
 {/* Projects Carousel */}
           <div className="relative group/carousel py-4">
@@ -1431,9 +1329,9 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="project-card flex-shrink-0 w-[85vw] sm:w-[400px] snap-start rounded-2xl overflow-hidden ${
+                  className={`project-card flex-shrink-0 w-[85vw] sm:w-[400px] snap-start rounded-lg overflow-hidden ${
                     theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                  } backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]"
+                  } backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]`}
                 >
                   <div className="relative w-full h-48 md:h-64 overflow-hidden">
                     <Image
@@ -1452,11 +1350,23 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="p-4 md:p-6">
-                    <h3 className="text-lg md:text-xl font-semibold code-font mb-2 md:mb-3 tracking-tight">{project.title}</h3>
-                    <p className={`mb-3 md:mb-4 text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
+                    <div className="mb-4">
+                      <p className={`mb-2 text-[11px] uppercase code-font ${
+                        theme === 'dark' ? 'text-indigo-300' : 'text-indigo-700'
+                      }`}>
+                        {project.role}
+                      </p>
+                      <h3 className="text-lg md:text-xl font-semibold code-font tracking-tight">{project.title}</h3>
+                    </div>
+                    <p className={`mb-3 text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
                       theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                     }`}>
                       <strong>Problem:</strong> {project.problem}
+                    </p>
+                    <p className={`mb-4 text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
+                      <strong>Solution:</strong> {project.solution}
                     </p>
 
                     <div className="flex flex-wrap gap-2 mb-4">
@@ -1483,31 +1393,13 @@ export default function Home() {
                       )}
                     </div>
 
-                    <div className="flex space-x-4">
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
-                          theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
-                        }`}
-                      >
-                        <ExternalLink className="h-4 w-4 mr-1" />
-                        Demo
-                      </a>
-                      {project.github && project.github !== "#" && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`inline-flex items-center text-sm code-font font-medium tracking-tight ${
-                            theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
-                          }`}
-                        >
-                          <Github className="h-4 w-4 mr-1" />
-                          Code
-                        </a>
-                      )}
+                    <div className={`rounded-lg border p-3 ${
+                      theme === 'dark'
+                        ? 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100'
+                        : 'border-emerald-700/20 bg-emerald-50 text-emerald-900'
+                    }`}>
+                      <p className="text-[11px] uppercase code-font font-semibold mb-1">Outcome</p>
+                      <p className="text-xs md:text-sm leading-relaxed code-font">{project.impact}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -1546,8 +1438,7 @@ export default function Home() {
           <p className={`text-center mt-8 text-sm code-font ${
             theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            <span className="md:hidden">← Drag to explore more projects →</span>
-            <span className="hidden md:inline">← Drag or use arrows to explore more projects →</span>
+            9 project snapshots across SaaS, operations, ecommerce, CMS, and automation.
           </p>
         </motion.div>
       </section>
