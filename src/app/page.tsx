@@ -428,6 +428,141 @@ export default function Home() {
           font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         }
 
+        .drawn-heading {
+          font-family: "Trebuchet MS", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          text-shadow:
+            0.7px 0 currentColor,
+            -0.5px 0 currentColor,
+            0 0.7px currentColor;
+          filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.16));
+        }
+
+        .drawn-heading::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: -0.16em;
+          width: min(72%, 560px);
+          height: 0.16em;
+          border-bottom: 3px solid currentColor;
+          border-radius: 48% 52% 45% 55%;
+          opacity: 0.35;
+          transform: translateX(-50%) rotate(-1.4deg);
+        }
+
+        .drawn-section-title {
+          font-family: "Trebuchet MS", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          text-shadow: 0.45px 0 currentColor;
+        }
+
+        .notebook-ink {
+          color: var(--notebook-ink);
+        }
+
+        .notebook-wash {
+          background-color: var(--notebook-wash);
+        }
+
+        .sketch-panel {
+          position: relative;
+        }
+
+        .sketch-panel::before,
+        .sketch-panel::after {
+          content: "";
+          position: absolute;
+          pointer-events: none;
+          border: 1px solid currentColor;
+          border-radius: 12px 9px 14px 10px;
+          opacity: 0.18;
+        }
+
+        .sketch-panel::before {
+          inset: -8px 7px 8px -7px;
+          transform: rotate(-0.7deg);
+        }
+
+        .sketch-panel::after {
+          inset: 7px -8px -7px 8px;
+          border-style: dashed;
+          transform: rotate(0.8deg);
+        }
+
+        .marker-underline {
+          position: relative;
+          display: inline-block;
+        }
+
+        .marker-underline::after {
+          content: "";
+          position: absolute;
+          left: -2%;
+          right: -2%;
+          bottom: 0.08em;
+          height: 0.36em;
+          border-radius: 999px;
+          background: currentColor;
+          opacity: 0.12;
+          transform: rotate(-1deg);
+          z-index: -1;
+        }
+
+        .pin-dot {
+          position: absolute;
+          width: 0.7rem;
+          height: 0.7rem;
+          border-radius: 999px;
+          box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.12);
+        }
+
+        .paper-tape {
+          position: absolute;
+          top: -0.75rem;
+          left: 1.25rem;
+          height: 1.5rem;
+          width: 5.25rem;
+          border-radius: 3px;
+          transform: rotate(-2deg);
+          opacity: 0.78;
+        }
+
+        .sketch-logo {
+          position: relative;
+        }
+
+        .sketch-logo::before,
+        .sketch-logo::after {
+          content: "";
+          position: absolute;
+          inset: -5px -8px;
+          border: 1px solid currentColor;
+          border-radius: 45% 55% 48% 52% / 55% 43% 57% 45%;
+          opacity: 0.26;
+          transform: rotate(-4deg);
+        }
+
+        .sketch-logo::after {
+          inset: -7px -10px;
+          border-style: dashed;
+          opacity: 0.16;
+          transform: rotate(5deg);
+        }
+
+        .sketch-image-frame {
+          position: relative;
+        }
+
+        .sketch-image-frame::after {
+          content: "";
+          position: absolute;
+          inset: 8px;
+          border: 1px solid currentColor;
+          border-radius: 9px 12px 8px 13px;
+          opacity: 0.28;
+          pointer-events: none;
+          transform: rotate(-0.6deg);
+        }
+
         .screen-backdrop {
           background-image:
             linear-gradient(to right, var(--screen-line) 1px, transparent 1px),
@@ -604,6 +739,8 @@ export default function Home() {
           '--screen-line': theme === 'dark' ? 'rgba(255,255,255,0.055)' : 'rgba(0,0,0,0.055)',
           '--scan-line': theme === 'dark' ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.03)',
           '--screen-vignette': theme === 'dark' ? 'rgba(3,7,18,0.52)' : 'rgba(249,250,251,0.48)',
+          '--notebook-ink': theme === 'dark' ? '#7dd3fc' : '#0369a1',
+          '--notebook-wash': theme === 'dark' ? 'rgba(125, 211, 252, 0.09)' : 'rgba(224, 242, 254, 0.72)',
         } as React.CSSProperties}
       />
 
@@ -649,8 +786,8 @@ export default function Home() {
       />
 
       {/* Fixed Navigation Bar */}
-      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 backdrop-blur-md ${
-        theme === 'dark' ? 'bg-gray-900/80' : 'bg-white/80'
+      <header className={`fixed top-0 left-0 right-0 z-40 border-b transition-all duration-300 backdrop-blur-md ${
+        theme === 'dark' ? 'border-white/10 bg-gray-950/78' : 'border-black/10 bg-white/82'
       } ${showScrollTop ? 'shadow-md' : ''}`}>
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between py-4">
@@ -660,26 +797,34 @@ export default function Home() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex items-center"
+              className={`sketch-logo flex items-center px-2 py-1 code-font ${
+                theme === 'dark' ? 'text-sky-300' : 'text-sky-700'
+              }`}
             >
-              <span className={`text-xl font-bold code-font tracking-tight ${
-                theme === 'dark' ? 'text-white' : 'text-black'
-              }`}>
+              <span className="relative z-10 text-xl font-bold tracking-tight">
                 JRA
               </span>
             </motion.a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className={`hidden md:flex items-center rounded-full border px-2 py-1 ${
+              theme === 'dark'
+                ? 'border-white/10 bg-white/[0.03]'
+                : 'border-black/10 bg-black/[0.025]'
+            }`}>
               {navLinks.map((link) => (
                 <motion.a
                   key={link.name}
                   href={link.href}
                   whileHover={{ y: -2 }}
-                  className={`text-sm font-medium tracking-wide transition-colors duration-200 ${
+                  className={`relative rounded-full px-3 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200 ${
                     activeSection === link.href.substring(1)
-                      ? theme === 'dark' ? 'text-white font-semibold' : 'text-black font-semibold'
-                      : theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
+                      ? theme === 'dark'
+                        ? 'bg-sky-300/10 text-sky-300 font-semibold'
+                        : 'bg-sky-50 text-sky-700 font-semibold'
+                      : theme === 'dark'
+                        ? 'text-gray-400 hover:text-sky-300'
+                        : 'text-gray-600 hover:text-sky-700'
                   }`}
                 >
                   {link.name}
@@ -693,8 +838,10 @@ export default function Home() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
-                className={`p-2 rounded-full ${
-                  theme === 'dark' ? 'bg-gray-800 text-yellow-400' : 'bg-gray-200 text-indigo-600'
+                className={`rounded-full border p-2 ${
+                  theme === 'dark'
+                    ? 'border-white/10 bg-white/[0.04] text-sky-300'
+                    : 'border-black/10 bg-black/[0.04] text-sky-700'
                 }`}
                 aria-label="Toggle theme"
               >
@@ -713,13 +860,15 @@ export default function Home() {
               </motion.button>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-full focus:outline-none"
+                className={`md:hidden rounded-full border p-2 focus:outline-none ${
+                  theme === 'dark' ? 'border-white/10 bg-white/[0.04]' : 'border-black/10 bg-black/[0.04]'
+                }`}
                 aria-label="Open menu"
               >
                 {isMenuOpen ? (
-                  <X className="h-6 w-6 text-indigo-500" />
+                  <X className="h-6 w-6 text-sky-500" />
                 ) : (
-                  <Menu className="h-6 w-6 text-indigo-500" />
+                  <Menu className="h-6 w-6 text-sky-500" />
                 )}
               </button>
             </div>
@@ -735,8 +884,10 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className={`fixed top-16 right-0 bottom-0 z-40 w-64 ${
-              theme === 'dark' ? 'bg-gray-900/95' : 'bg-white/95'
+            className={`fixed top-16 right-0 bottom-0 z-40 w-64 border-l ${
+              theme === 'dark'
+                ? 'border-white/10 bg-gray-950/95'
+                : 'border-black/10 bg-white/95'
             } backdrop-blur-md shadow-xl`}
           >
             <nav className="flex flex-col p-6 h-full">
@@ -746,18 +897,24 @@ export default function Home() {
                   href={link.href}
                   whileHover={{ x: 5 }}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center py-4 px-2 text-lg font-medium border-b ${
-                    theme === 'dark' 
-                      ? 'border-gray-800 text-gray-300 hover:text-indigo-400' 
-                      : 'border-gray-100 text-gray-700 hover:text-indigo-600'
-                  } ${activeSection === link.href.substring(1) ? 'text-indigo-500' : ''}`}
+                  className={`mb-2 flex items-center rounded-lg border px-3 py-3 text-base font-medium ${
+                    activeSection === link.href.substring(1)
+                      ? theme === 'dark'
+                        ? 'border-sky-300/20 bg-sky-300/10 text-sky-300'
+                        : 'border-sky-900/20 bg-sky-50 text-sky-700'
+                      : theme === 'dark'
+                        ? 'border-white/10 text-gray-300 hover:text-sky-300'
+                        : 'border-black/10 text-gray-700 hover:text-sky-700'
+                  }`}
                 >
                   <link.icon className="h-5 w-5 mr-3" />
                   {link.name}
                 </motion.a>
               ))}
               
-              <div className="mt-6 pt-6 border-t border-gray-800">
+              <div className={`mt-6 pt-6 border-t ${
+                theme === 'dark' ? 'border-white/10' : 'border-black/10'
+              }`}>
                 <div className="flex space-x-4 justify-center">
                   {[
                     { href: "https://github.com/grhey0115", icon: Github },
@@ -771,7 +928,7 @@ export default function Home() {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.2, rotate: 5 }}
                       className={`p-3 rounded-full transform transition-all duration-200 ${
-                        theme === 'dark' ? 'hover:bg-gray-800 text-gray-400 hover:text-indigo-400' : 'hover:bg-gray-200 text-gray-600 hover:text-indigo-600'
+                        theme === 'dark' ? 'hover:bg-gray-800 text-gray-400 hover:text-sky-400' : 'hover:bg-gray-200 text-gray-600 hover:text-sky-600'
                       }`}
                     >
                       <Icon className="h-6 w-6" />
@@ -794,8 +951,8 @@ export default function Home() {
             onClick={scrollToTop}
             className={`fixed bottom-6 right-6 p-3 rounded-full shadow-lg z-40 ${
               theme === 'dark' 
-                ? 'bg-indigo-600 hover:bg-indigo-700 text-white' 
-                : 'bg-indigo-500 hover:bg-indigo-600 text-white'
+                ? 'bg-sky-600 hover:bg-sky-700 text-white' 
+                : 'bg-sky-500 hover:bg-sky-600 text-white'
             } transition-all duration-300`}
             aria-label="Scroll to top"
           >
@@ -858,7 +1015,7 @@ export default function Home() {
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: isLoading ? 0 : 1 }}
             transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.6 }}
-            className={`text-5xl md:text-7xl font-bold code-font mb-6 ${
+            className={`drawn-heading relative inline-block text-5xl md:text-7xl font-bold mb-8 ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
@@ -991,7 +1148,7 @@ export default function Home() {
             <motion.a
               href="#about"
               whileHover={{ y: -5 }}
-              className="text-indigo-500"
+              className="text-sky-500"
             >
               <ChevronDown className="h-8 w-8 mx-auto animate-bounce" />
             </motion.a>
@@ -1032,25 +1189,66 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`max-w-3xl mx-auto p-8 rounded-2xl shadow-xl ${
-              theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-            } backdrop-blur-md`}
+            className="max-w-5xl mx-auto"
           >
-            <h2 className={`text-4xl font-semibold code-font mb-6 text-center tracking-tight ${
+            <h2 className={`drawn-section-title text-4xl font-semibold mb-12 text-center tracking-tight ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}>
               About Me
             </h2>
-            <p className={`text-lg mb-6 leading-relaxed ${
-              theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-            }`}>
-              I'm John Rey Amad, a full-stack developer who turns business workflows into dependable web apps, CMS tools, dashboards, and automation systems. I like working close to the actual problem: how users move through the product, where teams lose time, and which parts of the system need to be simple, fast, and maintainable.
-            </p>
-            <p className={`text-lg leading-relaxed ${
-              theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-            }`}>
-              My strongest stack is React, Next.js, Laravel, PHP, TypeScript, Supabase, and WordPress/Shopware. I also build AI-assisted workflows when they make the product more useful rather than just more flashy.
-            </p>
+            <div className="grid gap-8 lg:grid-cols-[1.35fr_0.9fr] items-stretch">
+              <div className={`sketch-panel rounded-lg border p-7 md:p-8 shadow-xl ${
+                theme === 'dark'
+                  ? 'border-white/10 bg-gray-900/65 text-white'
+                  : 'border-black/10 bg-white/75 text-black'
+              } backdrop-blur-md`}>
+                <p className={`text-xs uppercase code-font mb-4 ${
+                  theme === 'dark' ? 'text-sky-300' : 'text-sky-700'
+                }`}>
+                  Developer note
+                </p>
+                <p className={`text-lg md:text-xl mb-6 leading-relaxed ${
+                  theme === 'dark' ? 'text-gray-200' : 'text-gray-800'
+                }`}>
+                  I build <span className="marker-underline">practical web systems</span> for business workflows: dashboards, CMS tools, ecommerce stores, automation flows, and internal apps.
+                </p>
+                <p className={`text-base md:text-lg leading-relaxed ${
+                  theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                }`}>
+                  I like working close to the actual problem: how users move through the product, where teams lose time, and which parts of the system need to be simple, fast, and maintainable.
+                </p>
+              </div>
+
+              <div className={`sketch-panel rounded-lg border p-6 shadow-xl ${
+                theme === 'dark'
+                  ? 'border-sky-300/15 bg-sky-300/5 text-sky-50'
+                  : 'border-sky-900/15 bg-sky-50/70 text-sky-950'
+              } backdrop-blur-md`}>
+                <p className="code-font text-sm mb-5">// current focus</p>
+                <div className="space-y-4 code-font text-sm">
+                  {[
+                    ["builds", "dashboards, CMS, ecommerce"],
+                    ["stack", "React, Next.js, Laravel, PHP"],
+                    ["also", "Supabase, WordPress, Shopware"],
+                    ["style", "clean, useful, maintainable"],
+                  ].map(([label, value]) => (
+                    <div key={label} className="grid grid-cols-[88px_1fr] gap-3">
+                      <span className={theme === 'dark' ? 'text-sky-300' : 'text-sky-700'}>{label}</span>
+                      <span className={theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className={`mt-6 rounded-lg border p-4 ${
+                  theme === 'dark'
+                    ? 'border-white/10 bg-black/20 text-gray-300'
+                    : 'border-black/10 bg-white/60 text-gray-700'
+                }`}>
+                  <p className="code-font text-xs leading-relaxed">
+                    {"{ idea -> interface -> data flow -> shipped feature }"}
+                  </p>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -1062,38 +1260,55 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`text-4xl font-semibold code-font text-center mb-16 tracking-tight ${
+            className={`drawn-section-title text-4xl font-semibold text-center mb-4 tracking-tight ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
-            {activeNav === 'developer' ? 'Technical Expertise' : 'Design Proficiency'}
+            {activeNav === 'developer' ? 'Technical Toolkit' : 'Design Toolkit'}
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className={`max-w-2xl mx-auto text-center mb-14 text-base leading-relaxed ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
+            The tools I reach for most when turning rough requirements into usable products.
+          </motion.p>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {(activeNav === 'developer' ? [
               {
-                title: "Frontend Development",
+                title: "Frontend I ship",
+                note: "Interfaces, dashboards, and responsive product screens.",
                 skills: ["React & Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive UI", "Dashboard UX"]
               },
               {
-                title: "Backend Development",
+                title: "Backend I build",
+                note: "APIs, auth, data models, and admin workflows.",
                 skills: ["Laravel & PHP", "Node.js", "Supabase", "MySQL & PostgreSQL", "REST APIs", "Authentication"]
               },
               {
-                title: "DevOps & Tools",
+                title: "Tools I use",
+                note: "The practical stack around shipping and maintaining work.",
                 skills: ["Git & GitHub", "Vercel", "Docker Basics", "WordPress", "Shopware 6", "AI Integration"]
               }
             ] : [
               {
-                title: "UI/UX Design",
+                title: "Interfaces I shape",
+                note: "Flows, structure, and interaction decisions.",
                 skills: ["Figma & Adobe XD", "User Research", "Prototyping", "Wireframing", "Interaction Design", "Accessibility"]
               },
               {
-                title: "Visual Design",
+                title: "Visuals I refine",
+                note: "Clear hierarchy, spacing, and visual polish.",
                 skills: ["Typography", "Color Theory", "Branding", "Motion Graphics", "Iconography", "Layout Design"]
               },
               {
-                title: "Design Systems",
+                title: "Systems I maintain",
+                note: "Reusable patterns for consistent product work.",
                 skills: ["Component Libraries", "Design Tokens", "Style Guides", "Responsive Design", "Cross-Platform Design", "User Testing"]
               }
             ]).map((category, index) => (
@@ -1103,32 +1318,47 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2, duration: 0.6 }}
-                whileHover={{ y: -10, boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)" }}
-                className={`p-6 rounded-xl shadow-lg transition-all duration-300 ${
-                  theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
+                whileHover={{ y: -6 }}
+                className={`sketch-panel p-6 rounded-lg border shadow-lg transition-all duration-300 ${
+                  theme === 'dark'
+                    ? 'border-white/10 bg-gray-900/65 text-white'
+                    : 'border-black/10 bg-white/75 text-black'
                 } backdrop-blur-md`}
               >
-                <h3 className={`text-xl font-semibold code-font mb-4 tracking-tight ${
-                  theme === 'dark' ? 'text-white' : 'text-black'
-                }`}>{category.title}</h3>
-                <ul className="space-y-3">
+                <div className="mb-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className={`flex h-9 w-9 items-center justify-center rounded-lg border ${
+                      theme === 'dark'
+                        ? 'border-sky-300/20 bg-sky-300/10 text-sky-300'
+                        : 'border-sky-900/20 bg-sky-50 text-sky-800'
+                    }`}>
+                      <Code className="h-4 w-4" />
+                    </span>
+                    <h3 className={`text-xl font-semibold code-font tracking-tight ${
+                      theme === 'dark' ? 'text-white' : 'text-black'
+                    }`}>{category.title}</h3>
+                  </div>
+                  <p className={`text-sm leading-relaxed ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
+                    {category.note}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill, skillIndex) => (
-                    <motion.li
+                    <motion.span
                       key={skillIndex}
-                      className="flex items-center group"
-                      whileHover={{ x: 5 }}
+                      whileHover={{ y: -2, rotate: skillIndex % 2 === 0 ? -1 : 1 }}
+                      className={`rounded-full border px-3 py-1.5 text-xs code-font ${
+                        theme === 'dark'
+                          ? 'border-white/10 bg-white/5 text-gray-200'
+                          : 'border-black/10 bg-black/[0.03] text-gray-700'
+                      }`}
                     >
-                      <Code className={`h-4 w-4 mr-2 group-hover:scale-110 transition-transform ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                      }`} />
-                      <span className={`code-font transition-colors ${
-                        theme === 'dark' ? 'text-gray-300 group-hover:text-white' : 'text-gray-700 group-hover:text-black'
-                      }`}>
-                        {skill}
-                      </span>
-                    </motion.li>
+                      {skill}
+                    </motion.span>
                   ))}
-                </ul>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -1142,7 +1372,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`text-4xl font-semibold code-font text-center mb-4 tracking-tight ${
+            className={`drawn-section-title text-4xl font-semibold text-center mb-4 tracking-tight ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
@@ -1171,25 +1401,38 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
-                  className={`relative rounded-lg border p-5 md:p-6 shadow-lg ${
+                  className={`sketch-panel relative rounded-lg border p-5 md:p-6 shadow-lg ${
                     theme === 'dark'
                       ? 'border-white/10 bg-gray-900/70'
                       : 'border-black/10 bg-white/75'
                   } backdrop-blur-md`}
+                  style={{ rotate: `${index % 2 === 0 ? -0.25 : 0.25}deg` }}
                 >
                   <span className={`absolute -left-[31px] md:-left-[47px] top-7 h-3 w-3 rounded-full ring-4 ${
                     theme === 'dark'
-                      ? 'bg-cyan-300 ring-gray-950'
-                      : 'bg-cyan-700 ring-gray-50'
+                      ? 'bg-sky-300 ring-gray-950'
+                      : 'bg-sky-700 ring-gray-50'
+                  }`} />
+                  <span className={`pin-dot right-5 top-5 ${
+                    theme === 'dark' ? 'bg-sky-300' : 'bg-sky-700'
                   }`} />
 
                   <div>
                     <div>
-                      <p className={`mb-2 text-xs uppercase code-font ${
-                        theme === 'dark' ? 'text-cyan-300' : 'text-cyan-700'
-                      }`}>
-                        {experience.context}
-                      </p>
+                      <div className="mb-3 flex flex-wrap items-center gap-2">
+                        <p className={`rounded-full border px-3 py-1 text-xs uppercase code-font ${
+                          theme === 'dark'
+                            ? 'border-sky-300/20 bg-sky-300/10 text-sky-300'
+                            : 'border-sky-900/20 bg-sky-50 text-sky-700'
+                        }`}>
+                          {experience.context}
+                        </p>
+                        <span className={`text-xs code-font ${
+                          theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+                        }`}>
+                          note #{String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
                       <h3 className={`text-xl md:text-2xl font-semibold code-font tracking-tight ${
                         theme === 'dark' ? 'text-white' : 'text-black'
                       }`}>
@@ -1214,9 +1457,9 @@ export default function Home() {
                   }`}>
                     {experience.highlights.map((highlight) => (
                       <li key={highlight} className="flex gap-3">
-                        <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
-                          theme === 'dark' ? 'bg-cyan-300' : 'bg-cyan-700'
-                        }`} />
+                        <span className={`mt-1 shrink-0 code-font ${
+                          theme === 'dark' ? 'text-sky-300' : 'text-sky-700'
+                        }`}>→</span>
                         <span>{highlight}</span>
                       </li>
                     ))}
@@ -1228,8 +1471,8 @@ export default function Home() {
                         key={tech}
                         className={`text-xs px-3 py-1 rounded-full code-font font-medium ${
                           theme === 'dark'
-                            ? 'bg-cyan-900/30 text-cyan-300'
-                            : 'bg-cyan-100/60 text-cyan-800'
+                            ? 'bg-sky-900/30 text-sky-300'
+                            : 'bg-sky-100/60 text-sky-800'
                         }`}
                       >
                         {tech}
@@ -1254,7 +1497,7 @@ export default function Home() {
         >
           <motion.h2
             variants={itemVariants}
-            className={`text-4xl font-semibold code-font text-center mb-4 tracking-tight ${
+            className={`drawn-section-title text-4xl font-semibold text-center mb-4 tracking-tight ${
               theme === 'dark' ? 'text-white' : 'text-black'
             }`}
           >
@@ -1266,7 +1509,7 @@ export default function Home() {
               theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
             }`}
           >
-            A focused look at the problems, implementation decisions, and outcomes behind each build. Public links are intentionally omitted here to keep client work and private repositories private.
+            Case-study sheets from client and freelance work: what the project needed, how I approached it, and what changed after it shipped.
           </motion.p>
 
 {/* Projects Carousel */}
@@ -1329,11 +1572,17 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className={`project-card flex-shrink-0 w-[85vw] sm:w-[400px] snap-start rounded-lg overflow-hidden ${
+                  className={`sketch-panel project-card relative flex-shrink-0 w-[85vw] sm:w-[400px] snap-start rounded-lg border overflow-visible ${
                     theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-                  } backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]`}
+                  } ${theme === 'dark' ? 'border-white/10 text-white' : 'border-black/10 text-black'} backdrop-blur-md shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]`}
+                  style={{ rotate: `${index % 2 === 0 ? -0.35 : 0.35}deg` }}
                 >
-                  <div className="relative w-full h-48 md:h-64 overflow-hidden">
+                  <span className={`paper-tape ${
+                    theme === 'dark' ? 'bg-sky-200/15' : 'bg-sky-900/10'
+                  }`} />
+                  <div className={`sketch-image-frame relative w-full h-48 md:h-64 overflow-hidden rounded-t-lg ${
+                    theme === 'dark' ? 'text-white' : 'text-black'
+                  }`}>
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -1351,32 +1600,41 @@ export default function Home() {
                   </div>
                   <div className="p-4 md:p-6">
                     <div className="mb-4">
-                      <p className={`mb-2 text-[11px] uppercase code-font ${
-                        theme === 'dark' ? 'text-indigo-300' : 'text-indigo-700'
-                      }`}>
-                        {project.role}
-                      </p>
-                      <h3 className="text-lg md:text-xl font-semibold code-font tracking-tight">{project.title}</h3>
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <p className={`text-[11px] uppercase code-font leading-relaxed ${
+                          theme === 'dark' ? 'text-sky-300' : 'text-sky-700'
+                        }`}>
+                          {project.role}
+                        </p>
+                        <span className={`shrink-0 text-xs code-font ${
+                          theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+                        }`}>
+                          #{String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h3 className="marker-underline text-lg md:text-xl font-semibold code-font tracking-tight">{project.title}</h3>
                     </div>
-                    <p className={`mb-3 text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
-                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                    }`}>
-                      <strong>Problem:</strong> {project.problem}
-                    </p>
-                    <p className={`mb-4 text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      <strong>Solution:</strong> {project.solution}
-                    </p>
+                    <div className="space-y-3">
+                      <p className={`text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
+                        <strong>Problem:</strong> {project.problem}
+                      </p>
+                      <p className={`text-xs md:text-sm leading-relaxed code-font line-clamp-3 ${
+                        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        <strong>Approach:</strong> {project.solution}
+                      </p>
+                    </div>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2 my-4">
                       {project.technologies.slice(0, 3).map((tech, idx) => (
                         <span
                           key={idx}
                           className={`text-xs px-2 py-1 rounded-full code-font font-medium tracking-tighter ${
                             theme === 'dark'
-                              ? 'bg-indigo-900/30 text-indigo-300'
-                              : 'bg-indigo-100/50 text-indigo-800'
+                              ? 'border border-sky-300/15 bg-sky-300/10 text-sky-300'
+                              : 'border border-sky-900/15 bg-sky-50 text-sky-800'
                           }`}
                         >
                           {tech}
@@ -1395,10 +1653,10 @@ export default function Home() {
 
                     <div className={`rounded-lg border p-3 ${
                       theme === 'dark'
-                        ? 'border-emerald-400/20 bg-emerald-400/10 text-emerald-100'
-                        : 'border-emerald-700/20 bg-emerald-50 text-emerald-900'
+                        ? 'border-sky-300/20 bg-sky-300/10 text-sky-100'
+                        : 'border-sky-900/20 bg-sky-50 text-sky-900'
                     }`}>
-                      <p className="text-[11px] uppercase code-font font-semibold mb-1">Outcome</p>
+                      <p className="text-[11px] uppercase code-font font-semibold mb-1">Result note</p>
                       <p className="text-xs md:text-sm leading-relaxed code-font">{project.impact}</p>
                     </div>
                   </div>
@@ -1453,115 +1711,166 @@ export default function Home() {
           theme === 'dark' ? 'bg-gray-950/30' : 'bg-gray-100/30'
         }`}
       >
-        <div className="container mx-auto px-6 max-w-4xl">
-          <h2 className="text-4xl font-semibold code-font text-center mb-16 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <h2 className={`drawn-section-title text-4xl font-semibold text-center mb-4 tracking-tight ${
+            theme === 'dark' ? 'text-white' : 'text-black'
+          }`}>
             Let's Collaborate
           </h2>
+          <p className={`mx-auto mb-14 max-w-2xl text-center text-base leading-relaxed ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            Send a short project brief and I will get back to you about scope, timeline, and the cleanest way to build it.
+          </p>
           
-          <motion.div 
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className={`p-8 rounded-2xl shadow-xl ${
-              theme === 'dark' ? 'bg-gray-900/60' : 'bg-white/70'
-            } backdrop-blur-md`}
-          >
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className={`sketch-panel rounded-lg border p-6 shadow-xl ${
+                theme === 'dark'
+                  ? 'border-sky-300/15 bg-sky-300/5 text-sky-50'
+                  : 'border-sky-900/15 bg-sky-50/70 text-sky-950'
+              } backdrop-blur-md`}
+            >
+              <p className="code-font text-sm mb-5">// project brief</p>
+              <div className="space-y-4 text-sm code-font">
+                {[
+                  ["good fit", "dashboards, CMS, ecommerce, automations"],
+                  ["handoff", "clear scope, clean UI, maintainable code"],
+                  ["start with", "problem, users, timeline, budget range"],
+                ].map(([label, value]) => (
+                  <div key={label} className="grid grid-cols-[86px_1fr] gap-3">
+                    <span className={theme === 'dark' ? 'text-sky-300' : 'text-sky-700'}>{label}</span>
+                    <span className={theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}>{value}</span>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="mailto:amadjohnrey01@gmail.com"
+                className={`mt-7 inline-flex items-center rounded-full border px-4 py-2 text-sm code-font ${
+                  theme === 'dark'
+                    ? 'border-sky-300/20 bg-sky-300/10 text-sky-300 hover:bg-sky-300/15'
+                    : 'border-sky-900/20 bg-white/70 text-sky-700 hover:bg-sky-50'
+                }`}
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                email directly
+              </a>
+            </motion.div>
+
+            <motion.div 
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className={`sketch-panel relative rounded-lg border p-6 md:p-8 shadow-xl ${
+                theme === 'dark'
+                  ? 'border-white/10 bg-gray-900/65 text-white'
+                  : 'border-black/10 bg-white/75 text-black'
+              } backdrop-blur-md`}
+            >
+              <span className={`paper-tape ${
+                theme === 'dark' ? 'bg-sky-200/15' : 'bg-sky-900/10'
+              }`} />
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label 
+                      htmlFor="name" 
+                      className={`block mb-2 text-sm code-font font-medium tracking-tight ${
+                        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      }`}
+                    >
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="from_name"
+                      className={`w-full rounded-lg border p-3 code-font text-sm tracking-tight transition-all duration-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 ${
+                        theme === 'dark'
+                          ? 'border-white/10 bg-black/20 text-gray-200'
+                          : 'border-black/10 bg-white/70 text-gray-900'
+                      }`}
+                      placeholder="Your name"
+                      required
+                      minLength={2}
+                      maxLength={50}
+                    />
+                  </div>
+                  <div>
+                    <label 
+                      htmlFor="email" 
+                      className={`block mb-2 text-sm code-font font-medium tracking-tight ${
+                        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      }`}
+                    >
+                      Your Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="from_email"
+                      className={`w-full rounded-lg border p-3 code-font text-sm tracking-tight transition-all duration-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 ${
+                        theme === 'dark'
+                          ? 'border-white/10 bg-black/20 text-gray-200'
+                          : 'border-black/10 bg-white/70 text-gray-900'
+                      }`}
+                      placeholder="example@email.com"
+                      required
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    />
+                  </div>
+                </div>
                 <div>
                   <label 
-                    htmlFor="name" 
+                    htmlFor="message" 
                     className={`block mb-2 text-sm code-font font-medium tracking-tight ${
                       theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                     }`}
                   >
-                    Your Name
+                    Project Notes
                   </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="from_name"
-                    className={`w-full p-3 rounded-lg code-font text-sm tracking-tight ${
-                      theme === 'dark' 
-                        ? 'bg-gray-800/50 border-gray-700 text-gray-200 focus:border-indigo-500' 
-                        : 'bg-gray-50 border-gray-200 text-gray-900 focus:border-indigo-500'
-                    } border focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all duration-200`}
-                    placeholder="Your name"
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    className={`w-full rounded-lg border p-3 code-font text-sm tracking-tight transition-all duration-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 ${
+                      theme === 'dark'
+                        ? 'border-white/10 bg-black/20 text-gray-200'
+                        : 'border-black/10 bg-white/70 text-gray-900'
+                    }`}
+                    placeholder="What are we building, who is it for, and what should it help with?"
                     required
-                    minLength={2}
-                    maxLength={50}
-                  />
+                    minLength={10}
+                    maxLength={1000}
+                  ></textarea>
                 </div>
-                <div>
-                  <label 
-                    htmlFor="email" 
-                    className={`block mb-2 text-sm code-font font-medium tracking-tight ${
-                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`rounded-full px-7 py-3 text-base font-semibold code-font tracking-wide shadow-lg transform hover:scale-105 transition-all duration-300 ${
+                      theme === 'dark'
+                        ? 'bg-sky-600 text-white hover:bg-sky-700'
+                        : 'bg-sky-600 text-white hover:bg-sky-700'
                     }`}
                   >
-                    Your Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="from_email"
-                    className={`w-full p-3 rounded-lg code-font text-sm tracking-tight ${
-                      theme === 'dark' 
-                        ? 'bg-gray-800/50 border-gray-700 text-gray-200 focus:border-indigo-500' 
-                        : 'bg-gray-50 border-gray-200 text-gray-900 focus:border-indigo-500'
-                    } border focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all duration-200`}
-                    placeholder="example@email.com"
-                    required
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                  />
+                    {isSubmitting ? 'Sending...' : 'Send Brief'}
+                  </Button>
+                  {submitStatus === 'success' && (
+                    <p className="text-sm code-font text-sky-500">Message sent successfully.</p>
+                  )}
+                  {submitStatus === 'error' && (
+                    <p className="text-sm code-font text-red-500">Failed to send. Please try again.</p>
+                  )}
                 </div>
-              </div>
-              <div>
-                <label 
-                  htmlFor="message" 
-                  className={`block mb-2 text-sm code-font font-medium tracking-tight ${
-                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                >
-                  Your Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className={`w-full p-3 rounded-lg code-font text-sm tracking-tight ${
-                    theme === 'dark' 
-                      ? 'bg-gray-800/50 border-gray-700 text-gray-200 focus:border-indigo-500' 
-                      : 'bg-gray-50 border-gray-200 text-gray-900 focus:border-indigo-500'
-                  } border focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all duration-200`}
-                  placeholder="Tell me about your project..."
-                  required
-                  minLength={10}
-                  maxLength={1000}
-                ></textarea>
-              </div>
-              <div className="text-center">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`px-8 py-3 rounded-full text-lg font-semibold code-font tracking-wide shadow-lg transform hover:scale-105 transition-all duration-300 ${
-                    theme === 'dark'
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'
-                      : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600'
-                  }`}
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </Button>
-                {submitStatus === 'success' && (
-                  <p className="mt-4 text-green-500">Message sent successfully!</p>
-                )}
-                {submitStatus === 'error' && (
-                  <p className="mt-4 text-red-500">Failed to send message. Please try again.</p>
-                )}
-              </div>
-            </form>
-          </motion.div>
+              </form>
+            </motion.div>
+          </div>
           
           <div className="mt-12 text-center">
             <p className={`mb-4 text-sm code-font tracking-tight ${
@@ -1574,7 +1883,7 @@ export default function Home() {
                 href="mailto:amadjohnrey01@gmail.com"
                 whileHover={{ scale: 1.05 }}
                 className={`flex items-center text-sm code-font tracking-tight ${
-                  theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-700 hover:text-indigo-600'
+                  theme === 'dark' ? 'text-sky-400 hover:text-sky-300' : 'text-sky-700 hover:text-sky-600'
                 }`}
               >
                 <Mail className="h-5 w-5 mr-2" />
@@ -1609,7 +1918,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.2, rotate: 5 }}
                   className={`p-2 rounded-full transform transition-all duration-200 ${
-                    theme === 'dark' ? 'hover:bg-gray-800/50 text-gray-400 hover:text-indigo-400' : 'hover:bg-gray-200/50 text-gray-600 hover:text-indigo-600'
+                    theme === 'dark' ? 'hover:bg-gray-800/50 text-gray-400 hover:text-sky-400' : 'hover:bg-gray-200/50 text-gray-600 hover:text-sky-600'
                   }`}
                 >
                   <Icon className="h-5 w-5" />
