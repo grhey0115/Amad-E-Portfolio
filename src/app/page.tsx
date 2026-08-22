@@ -17,6 +17,16 @@ type Project = {
 
 const projects: Project[] = [
   {
+    title: 'Polerisdigital.com',
+    role: 'Frontend development · Interaction design · Responsive delivery',
+    summary:
+      'A service-focused website that gives businesses a clear view of Poleris Digital’s capabilities and approach.',
+    result:
+      'Built responsive service pages and conversion paths with reusable frontend patterns and restrained motion.',
+    technologies: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion', 'TypeScript'],
+    image: '/polerisdigital.png',
+  },
+  {
     title: 'Gloryyfunding',
     role: 'Full-stack development · Checkout · Dashboard UX',
     summary:
@@ -25,6 +35,16 @@ const projects: Project[] = [
       'Built secure checkout and account flows that connect challenge purchases with progress tracking and operational review.',
     technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'Stripe', 'TypeScript'],
     image: '/gloryyfunding.png',
+  },
+  {
+    title: 'Ersatzteil-Store',
+    role: 'Shopware development · Catalog architecture',
+    summary:
+      'A specialist ecommerce store designed around the search and inventory demands of automotive spare parts.',
+    result:
+      'Created a more direct path from technical part search to product selection and purchase.',
+    technologies: ['Shopware 6', 'PHP', 'MySQL', 'Vue.js'],
+    image: '/ersatzteil-store.png',
   },
   {
     title: 'Construction Ops',
@@ -37,24 +57,14 @@ const projects: Project[] = [
     image: '/construction-ops.png',
   },
   {
-    title: 'Tenant Management',
-    role: 'Full-stack development · Admin workflows',
+    title: 'SK Information System',
+    role: 'Laravel development · Data modeling · Analytics dashboards',
     summary:
-      'A property-management system for tenant communication, lease administration, notifications, and documents.',
+      'An information system for youth organizations to manage records, reporting, and operational data in one place.',
     result:
-      'Reduced repetitive admin work by giving property teams a clearer place to manage tenant activity.',
-    technologies: ['Next.js', 'Supabase', 'Twilio', 'React'],
-    image: '/tenant-management.png',
-  },
-  {
-    title: 'Ersatzteil-Store',
-    role: 'Shopware development · Catalog architecture',
-    summary:
-      'A specialist ecommerce store designed around the search and inventory demands of automotive spare parts.',
-    result:
-      'Created a more direct path from technical part search to product selection and purchase.',
-    technologies: ['Shopware 6', 'PHP', 'MySQL', 'Vue.js'],
-    image: '/ersatzteil-store.png',
+      'Reduced manual reporting work by organizing data entry, analytics, and content workflows around the team’s process.',
+    technologies: ['Laravel', 'React', 'MySQL', 'Filament'],
+    image: '/skyouth.png',
   },
 ];
 
@@ -87,10 +97,9 @@ const experience = [
 ];
 
 const archive = [
-  'Polerisdigital.com',
+  'Tenant Management System',
   'Blog Post Generator & Scheduler',
   'LotschFashion Ecommerce',
-  'SK Information System',
   'Water Refilling System',
 ];
 
