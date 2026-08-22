@@ -238,6 +238,13 @@ export default function Home() {
             </article>
           ))}
         </div>
+        <div className="education">
+          <h3>Education</h3>
+          <div>
+            <strong>Cebu Technological University</strong>
+            <p>Bachelor of Science in Information Technology · Magna Cum Laude</p>
+          </div>
+        </div>
       </section>
 
       <section className="about-section" id="about">

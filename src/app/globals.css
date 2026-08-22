@@ -447,6 +447,34 @@ form button:hover:not(:disabled) {
   font-size: 0.92rem;
 }
 
+.education {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 2rem;
+  padding-top: 3.5rem;
+}
+
+.education h3,
+.education p {
+  margin: 0;
+}
+
+.education h3 {
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.education strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.education p {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .about-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -629,6 +657,10 @@ footer p {
     grid-template-columns: 1fr 1fr;
   }
 
+  .education {
+    grid-template-columns: 1fr 2fr;
+  }
+
   .experience-list article > p:last-child {
     grid-column: 1 / -1;
   }
@@ -687,6 +719,7 @@ footer p {
   .archive,
   .archive ul,
   .experience-list article,
+  .education,
   .form-row {
     grid-template-columns: 1fr;
   }
