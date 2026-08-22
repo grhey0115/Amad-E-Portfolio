@@ -268,6 +268,9 @@ export default function Home() {
               </a>
             ))}
           </div>
+          <p className="repository-note">
+            Most professional work is held in private repositories under client NDAs.
+          </p>
         </div>
       </section>
 
