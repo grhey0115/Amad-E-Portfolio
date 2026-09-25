@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react';
 
 type SubmitStatus = 'idle' | 'success' | 'error';
 
@@ -68,6 +68,33 @@ const projects: Project[] = [
   },
 ];
 
+const aiSystems = [
+  {
+    title: 'AI voice agents',
+    summary:
+      'Phone agents that answer and place calls, qualify leads, and book appointments in natural conversation.',
+    flow: ['Call comes in', 'Speech to text', 'Agent applies your rules', 'Books or transfers', 'Summary logged'],
+  },
+  {
+    title: 'AI SMS & chat assistants',
+    summary:
+      'Text and chat assistants that reply in seconds, answer from business knowledge, and hand off to a person when it matters.',
+    flow: ['Message arrives', 'Pull context', 'Draft reply', 'Send or escalate'],
+  },
+  {
+    title: 'Workflow automations',
+    summary:
+      'Automations that move data between forms, CRMs, spreadsheets, email, and internal tools so nobody has to re-type it.',
+    flow: ['Trigger', 'Clean and enrich', 'Update systems', 'Notify the team'],
+  },
+  {
+    title: 'Blog Post Generator & Scheduler',
+    summary:
+      'AI-drafted articles that are reviewed, queued, and published on a schedule.',
+    flow: ['Topic', 'AI draft', 'Review', 'Scheduled publish'],
+  },
+];
+
 const experience = [
   {
     company: 'Poleris LLC',
@@ -98,7 +125,6 @@ const experience = [
 
 const archive = [
   'Tenant Management System',
-  'Blog Post Generator & Scheduler',
   'LotschFashion Ecommerce',
   'Water Refilling System',
 ];
@@ -147,6 +173,7 @@ export default function Home() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#work">Work</a>
+          <a href="#ai">AI</a>
           <a href="#experience">Experience</a>
           <a href="#about">About</a>
         </nav>
@@ -157,12 +184,12 @@ export default function Home() {
 
       <section className="hero" id="top">
         <div className="hero-copy">
-          <p className="availability"><span aria-hidden="true" /> Available for select projects</p>
+          <p className="availability">Available for select projects</p>
           <h1>I build software that makes work feel simpler.</h1>
           <p className="hero-intro">
-            I’m John Rey Amad, a full-stack developer focused on dashboards, ecommerce,
-            CMS platforms, and internal tools. I turn operational problems into clear,
-            maintainable products.
+            I’m John Rey Amad, a full-stack developer building dashboards, ecommerce,
+            internal tools, AI voice and text agents, and the automations that connect
+            them. I turn operational problems into clear, maintainable products.
           </p>
           <div className="hero-actions">
             <a className="primary-action" href="#work">See selected work</a>
@@ -201,8 +228,8 @@ export default function Home() {
                 />
               </div>
               <div className="project-copy">
-                <p className="project-role">{project.role}</p>
                 <h3>{project.title}</h3>
+                <p className="project-role">{project.role}</p>
                 <p>{project.summary}</p>
                 <div className="result">
                   <strong>What I delivered</strong>
@@ -222,6 +249,31 @@ export default function Home() {
             {archive.map((item) => <li key={item}>{item}</li>)}
           </ul>
         </div>
+      </section>
+
+      <section className="ai-section" id="ai">
+        <div className="section-heading">
+          <h2>AI &amp; automation</h2>
+          <p>Agents and workflows that pick up calls, answer messages, and handle repetitive work.</p>
+        </div>
+        <ol className="ai-list">
+          {aiSystems.map((system) => (
+            <li key={system.title}>
+              <h3>{system.title}</h3>
+              <div>
+                <p>{system.summary}</p>
+                <ol className="flow" aria-label={`${system.title}: how it works`}>
+                  {system.flow.map((step, index) => (
+                    <li key={step}>
+                      {index > 0 && <ArrowRight aria-hidden="true" />}
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="experience-section" id="experience">
@@ -254,7 +306,7 @@ export default function Home() {
         <div className="about-copy">
           <p>
             I work across interface design, frontend implementation, APIs, data models,
-            and admin workflows. The goal is straightforward: understand how the work
+            admin workflows, and AI agents. The goal is straightforward: understand how the work
             actually happens, then build the clearest system around it.
           </p>
           <p>
@@ -308,7 +360,7 @@ export default function Home() {
               {isSubmitting ? 'Sending…' : 'Send project details'}
               {!isSubmitting && <ArrowUpRight aria-hidden="true" />}
             </button>
-            <p className="form-status" aria-live="polite">
+            <p className="form-status" data-status={submitStatus} aria-live="polite">
               {submitStatus === 'success' && 'Thanks—your message was sent.'}
               {submitStatus === 'error' && 'The message did not send. Please email me directly.'}
             </p>

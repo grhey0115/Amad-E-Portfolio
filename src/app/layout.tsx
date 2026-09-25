@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "John Rey Amad — Full-stack Developer",
-  description: "Portfolio of John Rey Amad, a full-stack developer building dashboards, ecommerce platforms, CMS products, and internal tools.",
+  description: "Portfolio of John Rey Amad, a full-stack developer building dashboards, ecommerce platforms, internal tools, AI voice and text agents, and workflow automations.",
   keywords: ["Full-stack Developer", "React", "Next.js", "Laravel", "TypeScript", "Web Development"],
   authors: [{ name: "John Rey Amad" }],
   openGraph: {
@@ -25,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={montserrat.variable}>
       <body className="antialiased">
         {children}
       </body>
